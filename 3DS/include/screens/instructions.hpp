@@ -24,29 +24,23 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef STRUCTS_HPP
-#define STRUCTS_HPP
+#ifndef INSTRUCTIONS_HPP
+#define INSTRUCTIONS_HPP
 
-#include <string>
+#include "screenCommon.hpp"
 
-class Structs
+#include "utils/structs.hpp"
+
+#include <vector>
+
+class Instructions : public Screen
 {
 public:
-	struct ButtonPos {
-		int x;
-		int y;
-		int w;
-		int h;
-		int link;
-	};
-
-	struct Key {
-		std::string character;
-		int x;
-		int y;
-		int w;
-	};
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
 private:
+	int currentInstruction = 1; // 0 -> Main.
+	void DrawInst(void) const;
 };
 
 #endif

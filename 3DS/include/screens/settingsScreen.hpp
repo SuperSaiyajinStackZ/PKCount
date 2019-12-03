@@ -40,7 +40,6 @@ public:
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
 private:
 	int currentSetting = 0;
-	std::uint32_t setColor();
 	
 	std::vector<Structs::ButtonPos> buttons = {
 		{10, 85, 95, 41, -1},

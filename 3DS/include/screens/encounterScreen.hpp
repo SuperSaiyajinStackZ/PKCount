@@ -44,7 +44,6 @@ private:
 	void readCurrentEnc();
 	void saveCurrentEnc();
 	void createNewEnc();
-	std::string getString(uint maxLength, const char *hint);
 
 	// Current Encounter name.
 	std::string speciesName = "";

@@ -34,7 +34,7 @@ extern int textColor;
 void Credits::Draw(void) const
 {
 	Gui::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "PKCount - Credits");
+	Gui::DrawStringCentered(0, -1, 0.8f, textColor, "PKCount - Credits");
 	Gui::sprite(sprites_stackZ_idx, 0, 45);
 	Gui::DrawString(160, 65, 0.6f, textColor, "Hello there! I'm StackZ.\nI'm the Developer of this App. \nI hope you enjoy it!\nSee ya, StackZ.");
 	Gui::DrawBottom();

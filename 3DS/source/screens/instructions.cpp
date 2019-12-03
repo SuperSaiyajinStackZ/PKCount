@@ -24,29 +24,28 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef STRUCTS_HPP
-#define STRUCTS_HPP
+#include "gui.hpp"
 
-#include <string>
+#include "screens/instructions.hpp"
 
-class Structs
+extern bool touching(touchPosition touch, Structs::ButtonPos button);
+extern int textColor;
+
+void Instructions::DrawInst(void) const {
+	if (currentInstruction == 1) {
+		Gui::DrawStringCentered(0, -1, 0.8f, textColor, "Instructions - EncounterScreen");
+		Gui::DrawString(10, 30, 0.5f, textColor, "This is the MainScreen of this app. With this you can\nCount your Encounters for your Shiny Pokémon\nAnd save it afterward to your SD Card.\n\nTHIS IS A WORK IN PROGRESS!");
+	}
+}
+
+
+void Instructions::Draw(void) const
 {
-public:
-	struct ButtonPos {
-		int x;
-		int y;
-		int w;
-		int h;
-		int link;
-	};
+	Gui::DrawTop();
+	DrawInst();
+	Gui::DrawBottom();
+}
 
-	struct Key {
-		std::string character;
-		int x;
-		int y;
-		int w;
-	};
-private:
-};
 
-#endif
+void Instructions::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+}

@@ -29,28 +29,23 @@
 #include "screens/encounterScreen.hpp"
 
 #include "utils/inifile.h"
+#include "utils/keyboard.hpp"
 
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 extern int textColor;
 CIniFile encounterIni("sdmc:/3ds/PKCount/Encounter.ini");
 
 Encounter::Encounter() {
-	if (Gui::promptMsg("Would you like to read the latest Encounter\nOr a specific Encounter?", "Latest Encounter", "Specific Encounter")) {
-		speciesName = "LatestEncounter";
-		currentGeneration = "LatestEncounter";
-		readCurrentEnc();
-	} else {
-		currentGeneration = getString(50, "Enter the current Generation.");
-		speciesName = getString(50, "Enter the current Species name.");
-		readCurrentEnc();
-	}
+	speciesName = "LatestEncounter";
+	currentGeneration = "LatestEncounter";
+	readCurrentEnc();
 }
 
 
 void Encounter::Draw(void) const
 {
 	Gui::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "PKCount - Encounter Screen");
+	Gui::DrawStringCentered(0, -1, 0.8f, textColor, "PKCount - Encounter Screen");
 	Gui::DrawStringCentered(0, 50, 0.8f, textColor, "Current Species: " + speciesName);
 	Gui::DrawStringCentered(0, 85, 0.8f, textColor, "Current Generation: " + currentGeneration);
 	Gui::DrawStringCentered(0, 120, 0.8f, textColor, "Current Encounter: " + std::to_string(currentEncounter));
@@ -65,31 +60,26 @@ void Encounter::Draw(void) const
 
 void Encounter::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_START) {
-		encounterIni.SetInt("LatestEncounter", "LatestEncounter", currentEncounter);
-		encounterIni.SaveIniFile("sdmc:/3ds/PKCount/Encounter.ini");
+		if (Gui::promptMsg("Would you like to switch your Encounter?", "Yes", "No")) {
+			// Save Current Encounter before switching.
+			encounterIni.SetInt(currentGeneration, speciesName, currentEncounter);
+			currentGeneration = Input::getString("Enter the current Generation.");
+			speciesName = Input::getString("Enter the current Species name.");
+			readCurrentEnc();
+		}
 	}
 
 	if (hDown & KEY_X) {
 		saveCurrentEnc();
 	}
 	if (hHeld & KEY_B) {
-		Gui::HelperBox("<A>: Set Encounter manually.\n\n<START>: Save to latest Encounter.\n\n<X>: Save current Encounter.\n\n<SELECT>: Screen Selection.\n\n<Y>: Create New Encounter.\n\n<Left/Right/Touch>: increase / decrease Encounter.\n");
+		Gui::HelperBox("<A>: Set Encounter manually.\n\n<START>: Save and switch Encounter.\n\n<X>: Save current Encounter.\n\n<SELECT>: Screen Selection.\n\n<Y>: Create New Encounter.\n\n<Left/Right/Touch>: increase / decrease Encounter.\n");
 	}
 
 	if (hDown & KEY_A) {
-		std::string currentEnc = getString(50, "Enter the current Encounter.");
-		currentEncounter = std::stoi(currentEnc);
+		std::string currentEncounter2 = Input::Numpad("Enter the current Encounter.");
+		currentEncounter = std::stoi(currentEncounter2);
 	}
-
-//		if (hDown & KEY_SELECT) {
-//			if (Gui::promptMsg("Would you like to switch your Encounter?", "Yes", "No")) {
-//				// Save Current Encounter before switching.
-//				encounterIni.SetInt(currentGeneration, speciesName, currentEncounter);
-//				currentGeneration = getString(50, "Enter the current Generation.");
-//				speciesName = getString(50, "Enter the current Species name.");
-//				readCurrentEnc();
-//			}
-//		}
 
 	if (hDown & KEY_Y) {
 		if (Gui::promptMsg("Would you like to create a new Encounter?", "Yes", "No")) {
@@ -120,29 +110,11 @@ void Encounter::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 }
 
-std::string Encounter::getString(uint maxLength, const char *hint)
-{
-	std::string normalString;
-	C3D_FrameEnd(0);
-	SwkbdState state;
-	swkbdInit(&state, SWKBD_TYPE_NORMAL, 2, maxLength);
-	swkbdSetHintText(&state, hint);
-	swkbdSetValidation(&state, SWKBD_NOTBLANK_NOTEMPTY, SWKBD_FILTER_PROFANITY, 0);
-	char input[maxLength + 1]	= {0};
-	SwkbdButton ret = swkbdInputText(&state, input, sizeof(input));
-	input[maxLength]		= '\0';
-	if (ret == SWKBD_BUTTON_CONFIRM)
-	{
-		normalString = input;
-		return normalString;
-	} else {
-		return "";
-	}
-}
+
 
 void Encounter::createNewEnc() {
-	currentGeneration = getString(50, "Enter the current Generation.");
-	speciesName = getString(50, "Enter the current Species name.");
+	currentGeneration = Input::getString("Enter the current Generation.");
+	speciesName = Input::getString("Enter the current Species name.");
 	currentEncounter = encounterIni.GetInt(currentGeneration, speciesName, 0);
 	encounterIni.SaveIniFile("sdmc:/3ds/PKCount/Encounter.ini");
 }
@@ -155,8 +127,8 @@ void Encounter::saveCurrentEnc() {
 	if (Gui::promptMsg("Would you like to save to the current Encounter\nor create a new Encounter?", "Current Encounter", "New Encounter")) {
 		encounterIni.SetInt(currentGeneration, speciesName, currentEncounter);
 	} else {
-		currentGeneration = getString(50, "Enter the current Generation.");
-		speciesName = getString(50, "Enter the current Species name.");
+		currentGeneration = Input::getString("Enter the current Generation.");
+		speciesName = Input::getString("Enter the current Species name.");
 		encounterIni.SetInt(currentGeneration, speciesName, currentEncounter);
 	}
 	encounterIni.SaveIniFile("sdmc:/3ds/PKCount/Encounter.ini");

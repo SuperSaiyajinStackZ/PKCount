@@ -28,10 +28,11 @@
 
 #include "screens/creditsScreen.hpp"
 #include "screens/encounterScreen.hpp"
+#include "screens/instructions.hpp"
 #include "screens/screenSelection.hpp"
 #include "screens/settingsScreen.hpp"
 
-#define MAX_SCREENS 2
+#define MAX_SCREENS 4
 
 extern int textColor;
 extern int barColor;
@@ -40,12 +41,13 @@ extern bool exiting;
 void ScreenSelection::Draw(void) const
 {
 	Gui::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "PKCount - Screen Selection");
+	Gui::DrawStringCentered(0, -1, 0.8f, textColor, "Select the screen you want to enter.");
 
 	// Draw Boxes.
 	Gui::Draw_Rect(30, 50, 100, 60, barColor & C2D_Color32(255, 255, 255, 120));
 	Gui::Draw_Rect(150, 50, 100, 60, barColor & C2D_Color32(255, 255, 255, 120));
 	Gui::Draw_Rect(270, 50, 100, 60, barColor & C2D_Color32(255, 255, 255, 120));
+	Gui::Draw_Rect(30, 140, 100, 60, barColor & C2D_Color32(255, 255, 255, 120));
 	Gui::Draw_Rect(150, 140, 100, 60, barColor & C2D_Color32(255, 255, 255, 120));
 
 	// Draw Selection.
@@ -56,6 +58,8 @@ void ScreenSelection::Draw(void) const
 	} else if (selectedScreen == 2) {
 		Gui::Draw_Rect(270, 50, 100, 60, barColor);
 	} else if (selectedScreen == 3) {
+		Gui::Draw_Rect(30, 140, 100, 60, barColor);
+	} else if (selectedScreen == 4) {
 		Gui::Draw_Rect(150, 140, 100, 60, barColor);
 	}
 
@@ -63,6 +67,7 @@ void ScreenSelection::Draw(void) const
 	Gui::DrawString((400-Gui::GetStringWidth(0.6f, "Settings\n Screen"))/2-50+50, 60, 0.6f, textColor, "Settings\n Screen");
 	Gui::DrawString((400-Gui::GetStringWidth(0.6f, "Credits\nScreen"))/2+70+50, 60, 0.6f, textColor, "Credits\nScreen");
 
+	Gui::DrawString((400-Gui::GetStringWidth(0.6f, "Instructions\n   Screen"))/2-70-50, 150, 0.6f, textColor, "Instructions\n   Screen");
 	Gui::DrawString((400-Gui::GetStringWidth(0.6f, "Exit App"))/2-50+50, 160, 0.6f, textColor, "Exit App");
 	Gui::DrawBottom();
 }
@@ -76,7 +81,9 @@ void ScreenSelection::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			Gui::setScreen(std::make_unique<Settings>());
 		} else if (selectedScreen == 2) {
 			Gui::setScreen(std::make_unique<Credits>());
-		} else if (selectedScreen == 3) {
+ 		} else if (selectedScreen == 3) {
+			Gui::setScreen(std::make_unique<Instructions>());
+		} else if (selectedScreen == 4) {
 			exiting = true;
 		}
 	}
@@ -87,13 +94,17 @@ void ScreenSelection::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_UP) {
 		if (selectedScreen == 3) {
+			selectedScreen = 0;
+		} else if (selectedScreen == 4) {
 			selectedScreen = 1;
 		}
 	}
 
 	if (hDown & KEY_DOWN) {
-		if (selectedScreen == 1) {
+		if (selectedScreen == 0) {
 			selectedScreen = 3;
+		} else if (selectedScreen == 1) {
+			selectedScreen = 4;
 		}
 	}
 

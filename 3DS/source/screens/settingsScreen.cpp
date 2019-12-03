@@ -29,8 +29,7 @@
 #include "screens/settingsScreen.hpp"
 
 #include "utils/inifile.h"
-
-#include <string>
+#include "utils/keyboard.hpp"
 
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
@@ -43,7 +42,7 @@ extern int musicMode;
 void Settings::Draw(void) const
 {
 	Gui::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "PKCount - Settings");
+	Gui::DrawStringCentered(0, -1, 0.8f, textColor, "PKCount - Settings");
 	Gui::DrawBottom();
 
 	// Draw RGB Buttons.
@@ -93,32 +92,7 @@ void Settings::Draw(void) const
 	}
 }
 
-std::uint32_t Settings::setColor()
-{
-	u32 valueu32;
-	C3D_FrameEnd(0);
-	static SwkbdState state;
-	static bool first = true;
-	if (first)
-	{
-		swkbdInit(&state, SWKBD_TYPE_NUMPAD, 2, 3);
-		first = false;
-	}
-	swkbdSetFeatures(&state, SWKBD_FIXED_WIDTH);
-	swkbdSetValidation(&state, SWKBD_NOTBLANK_NOTEMPTY, 0, 0);
-	char input[3 + 1]	= {0};
-	SwkbdButton ret = swkbdInputText(&state, input, sizeof(input));
-	input[3]		= '\0';
-	if (ret == SWKBD_BUTTON_CONFIRM)
-	{
-		valueu32 = (u32)std::min(std::stoi(input), 255);
-		first = true;
-		return valueu32;
-	} else {
-		first = true;
-		return 0;
-	}
-}
+
 
 
 
@@ -138,7 +112,7 @@ void Settings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_TOUCH) {
 		if (touching(touch, buttons[0])) {
-			int temp = setColor();
+			int temp = Input::getUint(255, "Enter the Red RGB Value.");
 			if(temp != -1) {
 				red = temp;
 				if (currentSetting == 0) {
@@ -152,7 +126,7 @@ void Settings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 		} else if (touching(touch, buttons[1])) {
 			if (currentSetting != 3) {
-				int temp = setColor();
+				int temp = Input::getUint(255, "Enter the Green RGB Value.");
 				if(temp != -1) {
 					green = temp;
 					if (currentSetting == 0) {
@@ -172,7 +146,7 @@ void Settings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			}
 
 		} else if (touching(touch, buttons[2])) {
-			int temp = setColor();
+			int temp = Input::getUint(255, "Enter the Blue RGB Value.");
 			if(temp != -1) {
 				blue = temp;
 				if (currentSetting == 0) {
