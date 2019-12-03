@@ -37,6 +37,11 @@
 C3D_RenderTarget* Top;
 C3D_RenderTarget* Bottom;
 
+extern int barColor;
+extern int bgColor;
+extern int textColor;
+extern int musicMode;
+
 static C2D_SpriteSheet sprites;
 
 C2D_TextBuf sizeBuf;
@@ -89,8 +94,8 @@ bool Gui::promptMsg(std::string promptMsg, std::string AOption, std::string BOpt
 	C2D_TargetClear(Top, BLACK);
 	C2D_TargetClear(Bottom, BLACK);
 	Gui::DrawTop();
-	Gui::DrawStringCentered(0, 100, 0.6f, WHITE, promptMsg.c_str(), 400);
-	Gui::DrawStringCentered(0, 180, 0.6f, WHITE, "<A>: " + AOption + "   <B>: " + BOption, 400);
+	Gui::DrawStringCentered(0, 100, 0.6f, textColor, promptMsg.c_str(), 400);
+	Gui::DrawStringCentered(0, 180, 0.6f, textColor, "<A>: " + AOption + "   <B>: " + BOption, 400);
 	Gui::DrawBottom();
 	C3D_FrameEnd(0);
 
@@ -112,7 +117,7 @@ void Gui::HelperBox(std::string Msg) {
 	Gui::set_screen(Top);
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
 	Gui::Draw_Rect(0, 25, 400, 190, C2D_Color32(150, 150, 150, 220));
-	Gui::DrawString(5, 25, 0.55f, WHITE, Msg, 380);
+	Gui::DrawString(5, 25, 0.55f, textColor, Msg, 380);
 	Gui::set_screen(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
 	C3D_FrameEnd(0);
@@ -178,18 +183,18 @@ void Gui::screenBack()
 // GUI.
 void Gui::DrawTop(void) {
 	Gui::set_screen(Top);
-	Gui::Draw_Rect(0, 0, 400, 30, C2D_Color32(0, 120, 255, 255));
-	Gui::Draw_Rect(0, 25, 400, 190, C2D_Color32(120, 120, 120, 255));
-	Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 120, 255, 255));
+	Gui::Draw_Rect(0, 0, 400, 30, barColor);
+	Gui::Draw_Rect(0, 25, 400, 190, bgColor);
+	Gui::Draw_Rect(0, 215, 400, 25, barColor);
 	Gui::sprite(sprites_top_screen_top_idx, 0, 0);
 	Gui::sprite(sprites_top_screen_bot_idx, 0, 215);
 }
 
 void Gui::DrawBottom(void) {
 	Gui::set_screen(Bottom);
-	Gui::Draw_Rect(0, 0, 320, 30, C2D_Color32(0, 120, 255, 255));
-	Gui::Draw_Rect(0, 25, 320, 190, C2D_Color32(120, 120, 120, 255));
-	Gui::Draw_Rect(0, 215, 320, 25, C2D_Color32(0, 120, 255, 255));
+	Gui::Draw_Rect(0, 0, 320, 30, barColor);
+	Gui::Draw_Rect(0, 25, 320, 190, bgColor);
+	Gui::Draw_Rect(0, 215, 320, 25, barColor);
 	Gui::sprite(sprites_bottom_screen_top_idx, 0, 0);
 	Gui::sprite(sprites_bottom_screen_bot_idx, 0, 215);
 }

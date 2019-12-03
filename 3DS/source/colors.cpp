@@ -24,26 +24,26 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef COLORS_HPP
-#define COLORS_HPP
+#include "colors.hpp"
 
-#include <citro2d.h>
-#include <sstream>
-#include <string>
+int ColorHelper::getColorValue(int color, int bgr)
+{
+	char colorName[10];
+	int i;
+	std::stringstream ss;
 
-#define RGBA8(r, g, b, a) ((((r)&0xFF)<<0) | (((g)&0xFF)<<8) | (((b)&0xFF)<<16) | (((a)&0xFF)<<24))
+	itoa(color, colorName, 16);
+	std::string colorNamePart(colorName, 2*bgr+2, 2);
+	ss << std::hex << colorNamePart.c_str();
+	ss >> i;
 
-#define BLACK 			C2D_Color32(0, 0, 0, 255)
-#define WHITE 			C2D_Color32(255, 255, 255, 255)
-#define RED				C2D_Color32(255, 0, 0, 255)
-#define GREEN			C2D_Color32(0, 255, 0, 255)
-#define BLUE			C2D_Color32(0, 0, 255, 255)
-
-namespace ColorHelper {
-	int getColorValue(int color, int bgr);
-	std::string getColorName(int color, int bgr);
+	return i;
 }
 
-typedef u32 Color;
-
-#endif
+std::string ColorHelper::getColorName(int color, int bgr)
+{
+	char colorName[10];
+	int i = getColorValue(color, bgr);
+	itoa(i, colorName, 10);
+	return colorName;
+}

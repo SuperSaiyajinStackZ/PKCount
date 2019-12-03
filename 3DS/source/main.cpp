@@ -28,7 +28,9 @@
 
 #include "screens/encounterScreen.hpp"
 #include "screens/screenCommon.hpp"
+#include "screens/screenSelection.hpp"
 
+#include "utils/inifile.h"
 #include "utils/sound.h"
 #include "utils/structs.hpp"
 
@@ -37,14 +39,44 @@
 #include <unistd.h>
 
 bool dspfirmfound = false;
+bool musicExist = false;
+bool musicPlays = false;
 bool exiting = false;
 int fadealpha = 255;
 bool fadein = true;
 
+// Settings stuff.
+CIniFile settingsIni("sdmc:/3ds/PKCount/Settings.ini");
+int barColor;
+int bgColor;
+int textColor;
+int musicMode;
+
+void loadSettings() {
+	barColor = settingsIni.GetInt("Settings", "BarColor", RGBA8(0, 120, 255, 255));
+	bgColor = settingsIni.GetInt("Settings", "BGColor", RGBA8(120, 120, 120, 255));
+	textColor = settingsIni.GetInt("Settings", "TextColor", WHITE);
+	musicMode = settingsIni.GetInt("Settings", "MusicMode", 1);
+}
+
+void saveSettings() {
+	settingsIni.SetInt("Settings", "BarColor", barColor);
+	settingsIni.SetInt("Settings", "BGColor", bgColor);
+	settingsIni.SetInt("Settings", "TextColor", textColor);
+	settingsIni.SetInt("Settings", "MusicMode", musicMode);
+	settingsIni.SaveIniFile("sdmc:/3ds/PKCount/Settings.ini");
+}
+
+
 //Music and sound effects.
 sound *sfx_count = NULL;
+sound *music = NULL;
 
 void loadSoundEffects(void) {
+	if( access( "sdmc:/3ds/PKCount/music.wav", F_OK ) != -1 ) {
+		music = new sound("sdmc:/3ds/PKCount/music.wav", 1, true);
+		musicExist = true;
+	}
 	sfx_count = new sound("romfs:/count.wav", 2, false);
 }
 
@@ -64,6 +96,7 @@ int main()
 	sdmcInit();
 	Gui::init();
 	cfguInit();
+	loadSettings();
 	Gui::setScreen(std::make_unique<Encounter>());
 
 	osSetSpeedupEnable(true);	// Enable speed-up for New 3DS users
@@ -93,6 +126,21 @@ int main()
 		Gui::mainLoop(hDown, hHeld, touch);
 		C3D_FrameEnd(0);
 
+		if (dspfirmfound == true && musicExist == true && musicMode == 1) {
+			music->play();
+			musicPlays = true;
+		}
+
+		if (dspfirmfound == true && musicExist == true && musicMode == 0 && musicPlays == true) {
+			music->stop();
+			musicPlays = false;
+		}
+
+		if (hDown & KEY_SELECT) {
+			Gui::setScreen(std::make_unique<ScreenSelection>());
+		}
+
+
 		if (fadein == true) {
 			fadealpha -= 3;
 			if (fadealpha < 0) {
@@ -103,9 +151,17 @@ int main()
 	}
 
 	delete sfx_count;
-	if (dspfirmfound == true) {
+
+	if (musicPlays == true) {
+		music->stop();
+	}
+
+	if (dspfirmfound == true && musicExist == true) {
 		ndspExit();
 	}
+
+	delete music;
+	saveSettings();
 	Gui::exit();
 	gfxExit();
 	cfguExit();

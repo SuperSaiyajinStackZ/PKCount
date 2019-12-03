@@ -24,26 +24,22 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef COLORS_HPP
-#define COLORS_HPP
+#ifndef SCREENSELECTION_HPP
+#define SCREENSELECTION_HPP
 
-#include <citro2d.h>
-#include <sstream>
-#include <string>
+#include "screenCommon.hpp"
 
-#define RGBA8(r, g, b, a) ((((r)&0xFF)<<0) | (((g)&0xFF)<<8) | (((b)&0xFF)<<16) | (((a)&0xFF)<<24))
+#include "utils/structs.hpp"
 
-#define BLACK 			C2D_Color32(0, 0, 0, 255)
-#define WHITE 			C2D_Color32(255, 255, 255, 255)
-#define RED				C2D_Color32(255, 0, 0, 255)
-#define GREEN			C2D_Color32(0, 255, 0, 255)
-#define BLUE			C2D_Color32(0, 0, 255, 255)
+#include <vector>
 
-namespace ColorHelper {
-	int getColorValue(int color, int bgr);
-	std::string getColorName(int color, int bgr);
-}
-
-typedef u32 Color;
+class ScreenSelection : public Screen
+{
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+private:
+	int selectedScreen = 0;
+};
 
 #endif

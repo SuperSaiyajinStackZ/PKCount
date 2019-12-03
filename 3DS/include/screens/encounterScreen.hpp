@@ -40,9 +40,6 @@ public:
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
 	Encounter();
 private:
-	void DrawCredits(void) const;
-	int screenMode = 0;
-
 	int currentEncounter = 0;
 	void readCurrentEnc();
 	void saveCurrentEnc();
@@ -57,7 +54,6 @@ private:
 		{100, 80, 64, 64, -1}, // Plus.
 		{180, 80, 64, 64, -1}, // Minus.
 		{250, 145, 64, 64, -1}, // Reset.
-		{0, 215, 300, 25, -1}, // Bar.
 	};
 };
 

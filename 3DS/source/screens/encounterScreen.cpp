@@ -30,10 +30,8 @@
 
 #include "utils/inifile.h"
 
-#include <string>
-
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
-extern bool exiting;
+extern int textColor;
 CIniFile encounterIni("sdmc:/3ds/PKCount/Encounter.ini");
 
 Encounter::Encounter() {
@@ -48,95 +46,76 @@ Encounter::Encounter() {
 	}
 }
 
-void Encounter::DrawCredits(void) const {
-	Gui::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, C2D_Color32(255, 255, 255, 255), "PKCount by StackZ");
-	Gui::sprite(sprites_stackZ_idx, 0, 45);
-	Gui::DrawString(140, 65, 0.6f, WHITE, "Hello there! I'm StackZ.\nI'm the Developer of this App. \nI hope you enjoy it!\nPress on the bar again,\nto switch back to the Main Screen.\nSee ya, StackZ.");
-	Gui::DrawBottom();
-}
-
-
 
 void Encounter::Draw(void) const
 {
-	if (screenMode == 0) {
-		Gui::DrawTop();
-		Gui::DrawStringCentered(0, 0, 0.8f, C2D_Color32(255, 255, 255, 255), "PKCount by StackZ");
-		Gui::DrawStringCentered(0, 50, 0.8f, C2D_Color32(255, 255, 255, 255), "Current Species: " + speciesName);
-		Gui::DrawStringCentered(0, 85, 0.8f, C2D_Color32(255, 255, 255, 255), "Current Generation: " + currentGeneration);
-		Gui::DrawStringCentered(0, 120, 0.8f, C2D_Color32(255, 255, 255, 255), "Current Encounter: " + std::to_string(currentEncounter));
-		Gui::DrawString(397-Gui::GetStringWidth(0.6f, V_STRING), 237-Gui::GetStringHeight(0.6f, V_STRING), 0.6f, WHITE, V_STRING);
-		Gui::DrawBottom();
-		Gui::DrawStringCentered(0, 0, 0.8f, C2D_Color32(255, 255, 255, 255), "Hold B for Instructions.");
-		Gui::sprite(sprites_plus_idx, mainButtons[0].x, mainButtons[0].y);
-		Gui::sprite(sprites_minus_idx, mainButtons[1].x, mainButtons[1].y);
-		Gui::sprite(sprites_reset_idx, mainButtons[2].x, mainButtons[2].y);
-	} else if (screenMode == 1) {
-		DrawCredits();
-	}
+	Gui::DrawTop();
+	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "PKCount - Encounter Screen");
+	Gui::DrawStringCentered(0, 50, 0.8f, textColor, "Current Species: " + speciesName);
+	Gui::DrawStringCentered(0, 85, 0.8f, textColor, "Current Generation: " + currentGeneration);
+	Gui::DrawStringCentered(0, 120, 0.8f, textColor, "Current Encounter: " + std::to_string(currentEncounter));
+	Gui::DrawString(397-Gui::GetStringWidth(0.6f, V_STRING), 237-Gui::GetStringHeight(0.6f, V_STRING), 0.6f, WHITE, V_STRING);
+	Gui::DrawBottom();
+	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "Hold B for Instructions.");
+	Gui::sprite(sprites_plus_idx, mainButtons[0].x, mainButtons[0].y);
+	Gui::sprite(sprites_minus_idx, mainButtons[1].x, mainButtons[1].y);
+	Gui::sprite(sprites_reset_idx, mainButtons[2].x, mainButtons[2].y);
 }
 
 
 void Encounter::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	if (screenMode == 0) {
-		if (hDown & KEY_START) {
-			encounterIni.SetInt("LatestEncounter", "LatestEncounter", currentEncounter);
-			encounterIni.SaveIniFile("sdmc:/3ds/PKCount/Encounter.ini");
-			exiting = true;
-		}
-		if (hDown & KEY_X) {
-			saveCurrentEnc();
-		}
+	if (hDown & KEY_START) {
+		encounterIni.SetInt("LatestEncounter", "LatestEncounter", currentEncounter);
+		encounterIni.SaveIniFile("sdmc:/3ds/PKCount/Encounter.ini");
+	}
 
-		if (hHeld & KEY_B) {
-			Gui::HelperBox("<START>: Exit and Save Encounter.\n\n<X>: Save current Encounter.\n\n<SELECT>: Switch Encounter.\n\n<Y>: Create New Encounter.\n\n<Left/Right/Touch>: increase / decrease Encounter.\n\n<Touch Bar>: Show Credits.");
-		}
+	if (hDown & KEY_X) {
+		saveCurrentEnc();
+	}
+	if (hHeld & KEY_B) {
+		Gui::HelperBox("<A>: Set Encounter manually.\n\n<START>: Save to latest Encounter.\n\n<X>: Save current Encounter.\n\n<SELECT>: Screen Selection.\n\n<Y>: Create New Encounter.\n\n<Left/Right/Touch>: increase / decrease Encounter.\n");
+	}
 
-		if (hDown & KEY_SELECT) {
-			currentGeneration = getString(50, "Enter the current Generation.");
-			speciesName = getString(50, "Enter the current Species name.");
-			readCurrentEnc();
-		}
+	if (hDown & KEY_A) {
+		std::string currentEnc = getString(50, "Enter the current Encounter.");
+		currentEncounter = std::stoi(currentEnc);
+	}
 
-		if (hDown & KEY_Y) {
-			if (Gui::promptMsg("Would you like to create a new Encounter?", "Yes", "No")) {
-				createNewEnc();
-			}
-		}
+//		if (hDown & KEY_SELECT) {
+//			if (Gui::promptMsg("Would you like to switch your Encounter?", "Yes", "No")) {
+//				// Save Current Encounter before switching.
+//				encounterIni.SetInt(currentGeneration, speciesName, currentEncounter);
+//				currentGeneration = getString(50, "Enter the current Generation.");
+//				speciesName = getString(50, "Enter the current Species name.");
+//				readCurrentEnc();
+//			}
+//		}
 
-		if (hDown & KEY_RIGHT || hDown & KEY_R) {
+	if (hDown & KEY_Y) {
+		if (Gui::promptMsg("Would you like to create a new Encounter?", "Yes", "No")) {
+			createNewEnc();
+		}
+	}
+
+	if (hDown & KEY_RIGHT || hDown & KEY_R) {
+		playCount();
+		currentEncounter++;
+	}
+	if (hDown & KEY_LEFT || hDown & KEY_L) {
+		playCount();
+		if (currentEncounter > 0)	currentEncounter--;
+	}
+
+	if (hDown & KEY_TOUCH) {
+		if (touching(touch, mainButtons[0])) {
 			playCount();
 			currentEncounter++;
-		}
-
-		if (hDown & KEY_LEFT || hDown & KEY_L) {
+		} else if (touching(touch, mainButtons[1])) {
 			playCount();
 			if (currentEncounter > 0)	currentEncounter--;
-		}
-
-
-		if (hDown & KEY_TOUCH) {
-			if (touching(touch, mainButtons[0])) {
-				playCount();
-				currentEncounter++;
-			} else if (touching(touch, mainButtons[1])) {
-				playCount();
-				if (currentEncounter > 0)	currentEncounter--;
-			} else if (touching(touch, mainButtons[2])) {
-				playCount();
-				currentEncounter = 0;
-			} else if (touching(touch, mainButtons[3])) {
-				screenMode = 1;
-			}
-		}
-
-		// Credits Screen.
-	} else if (screenMode == 1) {
-		if (hDown & KEY_TOUCH) {
-			if (touching(touch, mainButtons[3])) {
-				screenMode = 0;
-			}
+		} else if (touching(touch, mainButtons[2])) {
+			playCount();
+			currentEncounter = 0;
 		}
 	}
 }

@@ -24,26 +24,22 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef COLORS_HPP
-#define COLORS_HPP
+#include "gui.hpp"
 
-#include <citro2d.h>
-#include <sstream>
-#include <string>
+#include "screens/creditsScreen.hpp"
 
-#define RGBA8(r, g, b, a) ((((r)&0xFF)<<0) | (((g)&0xFF)<<8) | (((b)&0xFF)<<16) | (((a)&0xFF)<<24))
+extern bool touching(touchPosition touch, Structs::ButtonPos button);
+extern int textColor;
 
-#define BLACK 			C2D_Color32(0, 0, 0, 255)
-#define WHITE 			C2D_Color32(255, 255, 255, 255)
-#define RED				C2D_Color32(255, 0, 0, 255)
-#define GREEN			C2D_Color32(0, 255, 0, 255)
-#define BLUE			C2D_Color32(0, 0, 255, 255)
-
-namespace ColorHelper {
-	int getColorValue(int color, int bgr);
-	std::string getColorName(int color, int bgr);
+void Credits::Draw(void) const
+{
+	Gui::DrawTop();
+	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "PKCount - Credits");
+	Gui::sprite(sprites_stackZ_idx, 0, 45);
+	Gui::DrawString(160, 65, 0.6f, textColor, "Hello there! I'm StackZ.\nI'm the Developer of this App. \nI hope you enjoy it!\nSee ya, StackZ.");
+	Gui::DrawBottom();
 }
 
-typedef u32 Color;
 
-#endif
+void Credits::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+}
