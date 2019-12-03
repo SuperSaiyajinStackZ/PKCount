@@ -1,0 +1,15 @@
+
+*.d
+*.o
+*.exe
+*.lst
+*.map
+*.3dsx
+*.cia
+*.elf
+*.smdh
+*.t3x
+*.bin
+*.nds
+DSi/arm9/build/soundbank_bin.h
+DSi/arm9/build/soundbank.h
