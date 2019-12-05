@@ -32,14 +32,7 @@
 
 #include "screens/screen.hpp"
 
-#include <3ds.h>
-#include <citro2d.h>
-#include <citro3d.h>
-#include <random>
 #include <stack>
-#include <string.h>
-#include <unordered_map>
-#include <wchar.h>
 
 namespace Gui
 {
@@ -48,6 +41,7 @@ namespace Gui
 
 	void mainLoop(u32 hDown, u32 hHeld, touchPosition touch);
 	void setScreen(std::unique_ptr<Screen> screen);
+	void screenIsFade(std::unique_ptr<Screen> screen, bool fadeout = true);
 	void set_screen(C3D_RenderTarget * screen);
 	void screenBack(void);
 

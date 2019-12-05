@@ -37,6 +37,7 @@
 extern int textColor;
 extern int barColor;
 extern bool exiting;
+extern int fadealpha;
 
 void ScreenSelection::Draw(void) const
 {
@@ -69,7 +70,9 @@ void ScreenSelection::Draw(void) const
 
 	Gui::DrawString((400-Gui::GetStringWidth(0.6f, "Instructions\n   Screen"))/2-70-50, 150, 0.6f, textColor, "Instructions\n   Screen");
 	Gui::DrawString((400-Gui::GetStringWidth(0.6f, "Exit App"))/2-50+50, 160, 0.6f, textColor, "Exit App");
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 	Gui::DrawBottom();
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 }
 
 

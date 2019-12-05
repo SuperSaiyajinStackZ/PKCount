@@ -51,7 +51,7 @@ void Encounter::Draw(void) const
 	Gui::DrawStringCentered(0, 120, 0.8f, textColor, "Current Encounter: " + std::to_string(currentEncounter));
 	Gui::DrawString(397-Gui::GetStringWidth(0.6f, V_STRING), 237-Gui::GetStringHeight(0.6f, V_STRING), 0.6f, WHITE, V_STRING);
 	Gui::DrawBottom();
-	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "Hold B for Instructions.");
+	Gui::DrawStringCentered(0, 0, 0.8f, textColor, "Hold <Select> for Instructions.");
 	Gui::sprite(sprites_plus_idx, mainButtons[0].x, mainButtons[0].y);
 	Gui::sprite(sprites_minus_idx, mainButtons[1].x, mainButtons[1].y);
 	Gui::sprite(sprites_reset_idx, mainButtons[2].x, mainButtons[2].y);
@@ -72,8 +72,8 @@ void Encounter::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_X) {
 		saveCurrentEnc();
 	}
-	if (hHeld & KEY_B) {
-		Gui::HelperBox("<A>: Set Encounter manually.\n\n<START>: Save and switch Encounter.\n\n<X>: Save current Encounter.\n\n<SELECT>: Screen Selection.\n\n<Y>: Create New Encounter.\n\n<Left/Right/Touch>: increase / decrease Encounter.\n");
+	if (hHeld & KEY_SELECT) {
+		Gui::HelperBox("<A>: Set Encounter manually.\n\n<START>: Save and switch Encounter.\n\n<X>: Save current Encounter.\n\n<B>: Screen Selection.\n\n<Y>: Create New Encounter.\n\n<Left/Right/Touch>: increase / decrease Encounter.\n");
 	}
 
 	if (hDown & KEY_A) {

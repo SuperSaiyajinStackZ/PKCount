@@ -38,6 +38,7 @@ extern int barColor;
 extern int bgColor;
 extern int textColor;
 extern int musicMode;
+extern int startMode;
 
 void Settings::Draw(void) const
 {
@@ -46,13 +47,13 @@ void Settings::Draw(void) const
 	Gui::DrawBottom();
 
 	// Draw RGB Buttons.
-	if (currentSetting != 3) {
+	if (currentSetting < 3) {
 		Gui::Draw_Rect(buttons[0].x, buttons[0].y, 95, 41, C2D_Color32(255, 0, 0, 255));
 		Gui::Draw_Rect(buttons[1].x, buttons[1].y, 95, 41, C2D_Color32(0, 255, 0, 255));
 		Gui::Draw_Rect(buttons[2].x, buttons[2].y, 95, 41, C2D_Color32(0, 0, 255, 255));
 	}
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 5; i++) {
 		if (currentSetting == i) {
 			Gui::Draw_Rect(25 + i * 25, 5, 16, 16, C2D_Color32(140, 140, 140, 255));
 		}
@@ -62,6 +63,7 @@ void Settings::Draw(void) const
 	Gui::DrawString(29 + 1 * 25, 5, 0.5f, WHITE, "2", 400);
 	Gui::DrawString(29 + 2 * 25, 5, 0.5f, WHITE, "3", 400);
 	Gui::DrawString(29 + 3 * 25, 5, 0.5f, WHITE, "4", 400);
+	Gui::DrawString(29 + 4 * 25, 5, 0.5f, WHITE, "5", 400);
 
 	if (currentSetting == 0) {
 		Gui::DrawStringCentered(0, 60, 0.7f, textColor, "Bar Color", 320);
@@ -90,6 +92,17 @@ void Settings::Draw(void) const
 			Gui::DrawString(140, 98, 0.7f, WHITE, "No", 400);
 		}
 	}
+
+	if (currentSetting == 4) {
+		Gui::DrawStringCentered(0, 60, 0.7f, textColor, "Show Startup Screen", 320);
+		if (startMode == 1) {
+			Gui::Draw_Rect(buttons[1].x, buttons[1].y, 95, 41, C2D_Color32(0, 150, 0, 255));
+			Gui::DrawString(140, 98, 0.7f, WHITE, "Yes", 400);
+		} else if (startMode == 0) {
+			Gui::Draw_Rect(buttons[1].x, buttons[1].y, 95, 41, C2D_Color32(150, 0, 0, 255));
+			Gui::DrawString(140, 98, 0.7f, WHITE, "No", 400);
+		}
+	}
 }
 
 
@@ -107,7 +120,7 @@ void Settings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 
 	if (hDown & KEY_R || hDown & KEY_RIGHT) {
-		if(currentSetting < 3)	currentSetting++;
+		if(currentSetting < 4)	currentSetting++;
 	}
 
 	if (hDown & KEY_TOUCH) {
@@ -125,7 +138,7 @@ void Settings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			}
 
 		} else if (touching(touch, buttons[1])) {
-			if (currentSetting != 3) {
+			if (currentSetting < 3) {
 				int temp = Input::getUint(255, "Enter the Green RGB Value.");
 				if(temp != -1) {
 					green = temp;
@@ -137,14 +150,19 @@ void Settings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						textColor = RGBA8(ColorHelper::getColorValue(textColor, 2), green, ColorHelper::getColorValue(textColor, 0), 255);
 					}
 				}
-			} else {
+			} else if (currentSetting == 3) {
 				if (musicMode == 0) {
 					musicMode = 1;
 				} else if (musicMode == 1) {
 					musicMode = 0;
 				}
+			} else if (currentSetting == 4) {
+				if (startMode == 0) {
+					startMode = 1;
+				} else if (startMode == 1) {
+					startMode = 0;
+				}
 			}
-
 		} else if (touching(touch, buttons[2])) {
 			int temp = Input::getUint(255, "Enter the Blue RGB Value.");
 			if(temp != -1) {

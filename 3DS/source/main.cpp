@@ -29,6 +29,7 @@
 #include "screens/encounterScreen.hpp"
 #include "screens/screenCommon.hpp"
 #include "screens/screenSelection.hpp"
+#include "screens/startScreen.hpp"
 
 #include "utils/inifile.h"
 #include "utils/sound.h"
@@ -42,8 +43,10 @@ bool dspfirmfound = false;
 bool musicExist = false;
 bool musicPlays = false;
 bool exiting = false;
+// Fade stuff.
 int fadealpha = 255;
 bool fadein = true;
+
 
 // Settings stuff.
 CIniFile settingsIni("sdmc:/3ds/PKCount/Settings.ini");
@@ -51,12 +54,14 @@ int barColor;
 int bgColor;
 int textColor;
 int musicMode;
+int startMode;
 
 void loadSettings() {
 	barColor = settingsIni.GetInt("Settings", "BarColor", RGBA8(0, 120, 255, 255));
 	bgColor = settingsIni.GetInt("Settings", "BGColor", RGBA8(120, 120, 120, 255));
 	textColor = settingsIni.GetInt("Settings", "TextColor", WHITE);
 	musicMode = settingsIni.GetInt("Settings", "MusicMode", 1);
+	startMode = settingsIni.GetInt("Settings", "StartMode", 1);
 }
 
 void saveSettings() {
@@ -64,6 +69,7 @@ void saveSettings() {
 	settingsIni.SetInt("Settings", "BGColor", bgColor);
 	settingsIni.SetInt("Settings", "TextColor", textColor);
 	settingsIni.SetInt("Settings", "MusicMode", musicMode);
+	settingsIni.SetInt("Settings", "StartMode", startMode);
 	settingsIni.SaveIniFile("sdmc:/3ds/PKCount/Settings.ini");
 }
 
@@ -97,7 +103,11 @@ int main()
 	Gui::init();
 	cfguInit();
 	loadSettings();
-	Gui::setScreen(std::make_unique<Encounter>());
+	if (startMode == 0) {
+		Gui::setScreen(std::make_unique<ScreenSelection>());
+	} else {
+		Gui::setScreen(std::make_unique<StartScreen>());
+	}
 
 	osSetSpeedupEnable(true);	// Enable speed-up for New 3DS users
 
@@ -136,13 +146,13 @@ int main()
 			musicPlays = false;
 		}
 
-		if (hDown & KEY_SELECT) {
+		if (hDown & KEY_B) {
 			Gui::setScreen(std::make_unique<ScreenSelection>());
 		}
 
 
 		if (fadein == true) {
-			fadealpha -= 3;
+			fadealpha -= 6;
 			if (fadealpha < 0) {
 				fadealpha = 0;
 				fadein = false;

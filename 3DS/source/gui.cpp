@@ -26,13 +26,8 @@
 
 
 #include "gui.hpp"
-#include "screens/screenCommon.hpp"
 
-#include <3ds.h>
-#include <assert.h>
-#include <stack>
-#include <stdarg.h>
-#include <unistd.h>
+#include "screens/screenCommon.hpp"
 
 C3D_RenderTarget* Top;
 C3D_RenderTarget* Bottom;
@@ -41,6 +36,9 @@ extern int barColor;
 extern int bgColor;
 extern int textColor;
 extern int musicMode;
+
+extern int fadealpha;
+extern int fadein;
 
 static C2D_SpriteSheet sprites;
 
@@ -173,6 +171,18 @@ void Gui::mainLoop(u32 hDown, u32 hHeld, touchPosition touch) {
 void Gui::setScreen(std::unique_ptr<Screen> screen)
 {
 	screens.push(std::move(screen));
+}
+
+void Gui::screenIsFade(std::unique_ptr<Screen> screen, bool fadeout) {
+	if (fadeout) {
+		fadealpha += 6;
+		if (fadealpha > 255) {
+			fadealpha = 255;
+			screens.push(std::move(screen));
+			fadein = true;
+			fadeout = false;
+		}
+	}
 }
 
 void Gui::screenBack()
