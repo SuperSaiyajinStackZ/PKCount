@@ -26,8 +26,9 @@
 
 #include "screens/screen.hpp"
 
-extern int fadein;
-extern int fadealpha;
+// Fade stuff.
+int fadealpha = 255;
+bool fadein = true;
 
 std::stack<std::unique_ptr<screen>> screens;
 
@@ -56,4 +57,11 @@ void Screen::back()
 void Screen::loop(u32 hDown, u32 hHeld, touchPosition touch) {
 	screens.top()->Draw();
 	screens.top()->Logic(hDown, hHeld, touch);
+	if (fadein == true) {
+		fadealpha -= 6;
+		if (fadealpha < 0) {
+			fadealpha = 0;
+			fadein = false;
+		}
+	}
 }

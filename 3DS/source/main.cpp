@@ -43,9 +43,6 @@ bool dspfirmfound = false;
 bool musicExist = false;
 bool musicPlays = false;
 bool exiting = false;
-// Fade stuff.
-int fadealpha = 255;
-bool fadein = true;
 
 
 // Settings stuff.
@@ -148,15 +145,6 @@ int main()
 
 		if (hDown & KEY_B) {
 			Screen::set(std::make_unique<ScreenSelection>());
-		}
-
-
-		if (fadein == true) {
-			fadealpha -= 6;
-			if (fadealpha < 0) {
-				fadealpha = 0;
-				fadein = false;
-			}
 		}
 	}
 
