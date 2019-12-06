@@ -104,9 +104,9 @@ int main()
 	cfguInit();
 	loadSettings();
 	if (startMode == 0) {
-		Gui::setScreen(std::make_unique<ScreenSelection>());
+		Screen::set(std::make_unique<ScreenSelection>());
 	} else {
-		Gui::setScreen(std::make_unique<StartScreen>());
+		Screen::set(std::make_unique<StartScreen>());
 	}
 
 	osSetSpeedupEnable(true);	// Enable speed-up for New 3DS users
@@ -133,7 +133,7 @@ int main()
 		C2D_TargetClear(Top, BLACK);
 		C2D_TargetClear(Bottom, BLACK);
 		Gui::clearTextBufs();
-		Gui::mainLoop(hDown, hHeld, touch);
+		Screen::loop(hDown, hHeld, touch);
 		C3D_FrameEnd(0);
 
 		if (dspfirmfound == true && musicExist == true && musicMode == 1) {
@@ -147,7 +147,7 @@ int main()
 		}
 
 		if (hDown & KEY_B) {
-			Gui::setScreen(std::make_unique<ScreenSelection>());
+			Screen::set(std::make_unique<ScreenSelection>());
 		}
 
 

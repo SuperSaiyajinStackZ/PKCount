@@ -29,14 +29,22 @@
 
 #include <3ds.h>
 #include <memory>
+#include <stack>
 
-class Screen
+class screen
 {
 public:
-	virtual ~Screen() {}
+	virtual ~screen() {}
 	virtual void Logic(u32 hDown, u32 hHeld, touchPosition touch) = 0;
 	virtual void Draw() const = 0;
 private:
 };
+
+namespace Screen {
+	void set(std::unique_ptr<screen> screen2);
+	void fade(std::unique_ptr<screen> screen2, bool fadeout = true);
+	void back(void);
+	void loop(u32 hDown, u32 hHeld, touchPosition touch);
+}
 
 #endif

@@ -24,28 +24,36 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef SETTINGSSCREEN_HPP
-#define SETTINGSSCREEN_HPP
+#include "screens/screen.hpp"
 
-#include "screenCommon.hpp"
+extern int fadein;
+extern int fadealpha;
 
-#include "utils/structs.hpp"
+std::stack<std::unique_ptr<screen>> screens;
 
-#include <vector>
-
-class Settings : public screen
+void Screen::set(std::unique_ptr<screen> screen2)
 {
-public:
-	void Draw(void) const override;
-	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
-private:
-	int currentSetting = 0;
-	
-	std::vector<Structs::ButtonPos> buttons = {
-		{10, 85, 95, 41, -1},
-		{115, 85, 95, 41, -1},
-		{220, 85, 95, 41, -1},
-	};
-};
+	screens.push(std::move(screen2));
+}
 
-#endif
+void Screen::fade(std::unique_ptr<screen> screen2, bool fadeout) {
+	if (fadeout) {
+		fadealpha += 6;
+		if (fadealpha > 255) {
+			fadealpha = 255;
+			screens.push(std::move(screen2));
+			fadein = true;
+			fadeout = false;
+		}
+	}
+}
+
+void Screen::back()
+{
+	screens.pop();
+}
+
+void Screen::loop(u32 hDown, u32 hHeld, touchPosition touch) {
+	screens.top()->Draw();
+	screens.top()->Logic(hDown, hHeld, touch);
+}

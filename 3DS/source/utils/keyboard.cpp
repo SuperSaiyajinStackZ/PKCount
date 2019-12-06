@@ -125,7 +125,7 @@ std::string Input::Numpad(uint maxLength, std::string Text)
 			Gui::DrawString((400-Gui::GetStringWidth(0.55f, Text))/2, 2, 0.55f, textColor, Text, 400);
 			Gui::DrawString(0, 218, 0.8, textColor, (string+(cursorBlink-- > 0 ? "_" : "")).c_str(), 400);
 			if(cursorBlink < -20)	cursorBlink = 20;
-			Gui::set_screen(Bottom);
+			Gui::setDraw(Bottom);
 			Gui::Draw_Rect(0, 0, 320, 240, barColor);
 			DrawNumpad();
 			scanKeys();

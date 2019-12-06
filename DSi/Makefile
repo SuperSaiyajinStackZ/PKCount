@@ -14,7 +14,7 @@ NITRO_FILES		:= nitrofiles
 
 # These set the information text in the nds file
 GAME_TITLE		:= PKCount
-GAME_SUBTITLE1	:= StackZ
+GAME_SUBTITLE1	:= Stack-Team
 
 include $(DEVKITARM)/ds_rules
 

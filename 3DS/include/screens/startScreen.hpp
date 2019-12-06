@@ -33,7 +33,7 @@
 
 #include <vector>
 
-class StartScreen : public Screen
+class StartScreen : public screen
 {
 public:
 	void Draw(void) const override;

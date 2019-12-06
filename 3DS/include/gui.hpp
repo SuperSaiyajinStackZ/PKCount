@@ -32,19 +32,12 @@
 
 #include "screens/screen.hpp"
 
-#include <stack>
-
 namespace Gui
 {
 	Result init(void);
 	void exit(void);
 
-	void mainLoop(u32 hDown, u32 hHeld, touchPosition touch);
-	void setScreen(std::unique_ptr<Screen> screen);
-	void screenIsFade(std::unique_ptr<Screen> screen, bool fadeout = true);
-	void set_screen(C3D_RenderTarget * screen);
-	void screenBack(void);
-
+	void setDraw(C3D_RenderTarget * screen);
 	C3D_RenderTarget* target(gfxScreen_t t);
 
 	// Clear Text.

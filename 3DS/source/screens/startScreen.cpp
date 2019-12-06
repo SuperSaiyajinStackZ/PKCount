@@ -33,11 +33,11 @@ extern int fadealpha;
 
 void StartScreen::Draw(void) const
 {
-	Gui::set_screen(Top);
+	Gui::setDraw(Top);
 	Gui::sprite(sprites_dev_by_idx, 0, 0);
     Gui::DrawString(240, 200, 0.6, BLACK, "StackZ 2019-2020");
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
-	Gui::set_screen(Bottom);
+	Gui::setDraw(Bottom);
     Gui::Draw_Rect(0, 0, 320, 240, WHITE);
 	Gui::sprite(sprites_banner_idx, 35, 40);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
@@ -53,6 +53,6 @@ void StartScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 
     if (isStartup == false) {
-		Gui::screenIsFade(std::make_unique<ScreenSelection>());
+		Screen::fade(std::make_unique<ScreenSelection>());
     }
 }

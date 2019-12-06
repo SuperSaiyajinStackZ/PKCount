@@ -43,7 +43,6 @@ extern int fadein;
 static C2D_SpriteSheet sprites;
 
 C2D_TextBuf sizeBuf;
-std::stack<std::unique_ptr<Screen>> screens;
 
 bool currentScreen = false;
 
@@ -72,7 +71,7 @@ void Gui::exit(void)
 	C3D_Fini();
 }
 
-void Gui::set_screen(C3D_RenderTarget * screen)
+void Gui::setDraw(C3D_RenderTarget * screen)
 {
 	C2D_SceneBegin(screen);
 	currentScreen = screen == Top ? 1 : 0;
@@ -112,11 +111,11 @@ bool Gui::promptMsg(std::string promptMsg, std::string AOption, std::string BOpt
 void Gui::HelperBox(std::string Msg) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-	Gui::set_screen(Top);
+	Gui::setDraw(Top);
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
 	Gui::Draw_Rect(0, 25, 400, 190, C2D_Color32(150, 150, 150, 220));
 	Gui::DrawString(5, 25, 0.55f, textColor, Msg, 380);
-	Gui::set_screen(Bottom);
+	Gui::setDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
 	C3D_FrameEnd(0);
 }
@@ -163,36 +162,9 @@ bool Gui::Draw_Rect(float x, float y, float w, float h, u32 color) {
 	return C2D_DrawRectSolid(x, y, 0.5f, w, h, color);
 }
 
-void Gui::mainLoop(u32 hDown, u32 hHeld, touchPosition touch) {
-	screens.top()->Draw();
-	screens.top()->Logic(hDown, hHeld, touch);
-}
-
-void Gui::setScreen(std::unique_ptr<Screen> screen)
-{
-	screens.push(std::move(screen));
-}
-
-void Gui::screenIsFade(std::unique_ptr<Screen> screen, bool fadeout) {
-	if (fadeout) {
-		fadealpha += 6;
-		if (fadealpha > 255) {
-			fadealpha = 255;
-			screens.push(std::move(screen));
-			fadein = true;
-			fadeout = false;
-		}
-	}
-}
-
-void Gui::screenBack()
-{
-	screens.pop();
-}
-
 // GUI.
 void Gui::DrawTop(void) {
-	Gui::set_screen(Top);
+	Gui::setDraw(Top);
 	Gui::Draw_Rect(0, 0, 400, 30, barColor);
 	Gui::Draw_Rect(0, 25, 400, 190, bgColor);
 	Gui::Draw_Rect(0, 215, 400, 25, barColor);
@@ -201,7 +173,7 @@ void Gui::DrawTop(void) {
 }
 
 void Gui::DrawBottom(void) {
-	Gui::set_screen(Bottom);
+	Gui::setDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 30, barColor);
 	Gui::Draw_Rect(0, 25, 320, 190, bgColor);
 	Gui::Draw_Rect(0, 215, 320, 25, barColor);

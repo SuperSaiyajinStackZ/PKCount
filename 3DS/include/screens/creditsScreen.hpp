@@ -33,7 +33,7 @@
 
 #include <vector>
 
-class Credits : public Screen
+class Credits : public screen
 {
 public:
 	void Draw(void) const override;

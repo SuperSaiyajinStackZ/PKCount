@@ -79,13 +79,13 @@ void ScreenSelection::Draw(void) const
 void ScreenSelection::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_A) {
 		if (selectedScreen == 0) {
-			Gui::setScreen(std::make_unique<Encounter>());
+			Screen::set(std::make_unique<Encounter>());
 		} else if (selectedScreen == 1) {
-			Gui::setScreen(std::make_unique<Settings>());
+			Screen::set(std::make_unique<Settings>());
 		} else if (selectedScreen == 2) {
-			Gui::setScreen(std::make_unique<Credits>());
+			Screen::set(std::make_unique<Credits>());
  		} else if (selectedScreen == 3) {
-			Gui::setScreen(std::make_unique<Instructions>());
+			Screen::set(std::make_unique<Instructions>());
 		} else if (selectedScreen == 4) {
 			exiting = true;
 		}
