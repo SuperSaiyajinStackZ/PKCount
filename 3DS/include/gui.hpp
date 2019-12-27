@@ -50,6 +50,7 @@ namespace Gui
 	bool Draw_Rect(float x, float y, float w, float h, u32 color);
 	bool promptMsg(std::string promptMsg, std::string AOption, std::string BOption);
 	void HelperBox(std::string Msg);
+	void DrawWarnMsg(std::string msg);
 
 	// New Text / String Functions.
 	void DrawStringCentered(float x, float y, float size, u32 color, std::string Text, int maxWidth = 400);

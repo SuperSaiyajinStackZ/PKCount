@@ -10,7 +10,7 @@ endif
 #---------------------------------------------------------------------------------
 VERSION_MAJOR := 0
 VERSION_MINOR := 0
-VERSION_MICRO := 1
+VERSION_MICRO := 2
 VERSION_STRING := "Version: $(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_MICRO)"
 
 include $(DEVKITARM)/ds_rules

@@ -84,8 +84,8 @@ void ScreenSelection::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			Screen::set(std::make_unique<Settings>());
 		} else if (selectedScreen == 2) {
 			Screen::set(std::make_unique<Credits>());
- 		} else if (selectedScreen == 3) {
-			Screen::set(std::make_unique<Instructions>());
+		} else if (selectedScreen == 3) {
+			 Gui::DrawWarnMsg("This Feature is not implemented yet.");
 		} else if (selectedScreen == 4) {
 			exiting = true;
 		}

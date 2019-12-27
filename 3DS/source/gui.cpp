@@ -83,6 +83,20 @@ void Gui::sprite(int key, int x, int y, float ScaleX, float ScaleY)
 	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, key), x, y, 0.5f, NULL, ScaleX, ScaleY);
 }
 
+void Gui::DrawWarnMsg(std::string msg) {
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(Top, BLACK);
+	C2D_TargetClear(Bottom, BLACK);
+	Gui::DrawTop();
+	Gui::DrawStringCentered(0, 0, 0.6f, textColor, msg, 400);
+	Gui::DrawBottom();
+	C3D_FrameEnd(0);
+	for (int i = 0; i < 60*3; i++) {
+		gspWaitForVBlank();
+	}
+}
+
 // Display a Message, which needs to be confirmed with A/B.
 bool Gui::promptMsg(std::string promptMsg, std::string AOption, std::string BOption)
 {
