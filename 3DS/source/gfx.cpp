@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,35 +24,31 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "gui.hpp"
+#include "common.hpp"
 
-#include "screens/screenSelection.hpp"
-#include "screens/startScreen.hpp"
+extern int barColor;
+extern int bgColor;
+extern C2D_SpriteSheet sprites;
 
-extern int fadealpha;
-
-void StartScreen::Draw(void) const
-{
-	Gui::setDraw(Top);
-	Gui::sprite(sprites_dev_by_idx, 0, 0);
-    Gui::DrawString(240, 200, 0.6, BLACK, "StackZ 2019-2020");
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
-	Gui::setDraw(Bottom);
-    Gui::Draw_Rect(0, 0, 320, 240, WHITE);
-	Gui::sprite(sprites_banner_idx, 35, 40);
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
+void GFX::DrawSprite(int index, int x, int y, float ScaleX, float ScaleY) {
+	Gui::DrawSprite(sprites, index, x, y, ScaleX, ScaleY);
 }
 
+// GUI.
+void GFX::DrawTop(void) {
+	Gui::ScreenDraw(Top);
+	Gui::Draw_Rect(0, 0, 400, 30, barColor);
+	Gui::Draw_Rect(0, 25, 400, 190, bgColor);
+	Gui::Draw_Rect(0, 215, 400, 25, barColor);
+	GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0);
+	GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215);
+}
 
-void StartScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	gspWaitForVBlank();
-	if(delay > 0) {
-		delay--;
-	} else {
-		isStartup = !isStartup;
-	}
-
-    if (isStartup == false) {
-		Screen::fade(std::make_unique<ScreenSelection>());
-    }
+void GFX::DrawBottom(void) {
+	Gui::ScreenDraw(Bottom);
+	Gui::Draw_Rect(0, 0, 320, 30, barColor);
+	Gui::Draw_Rect(0, 25, 320, 190, bgColor);
+	Gui::Draw_Rect(0, 215, 320, 25, barColor);
+	GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
+	GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
 }

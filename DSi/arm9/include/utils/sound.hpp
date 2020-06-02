@@ -1,5 +1,6 @@
 #ifndef SOUND_HPP
 #define SOUND_HPP
+
 #include <maxmod9.h>
 
 namespace Sound {

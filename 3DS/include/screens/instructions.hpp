@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,17 +24,12 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef INSTRUCTIONS_HPP
-#define INSTRUCTIONS_HPP
+#ifndef _PKCOUNT_INSTRUCTIONS_HPP
+#define _PKCOUNT_INSTRUCTIONS_HPP
 
 #include "screenCommon.hpp"
 
-#include "utils/structs.hpp"
-
-#include <vector>
-
-class Instructions : public screen
-{
+class Instructions : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;

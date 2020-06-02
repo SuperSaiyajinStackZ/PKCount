@@ -1,10 +1,10 @@
-#pragma once
+#ifndef _PKCOUNT_SOUND_H
+#define _PKCOUNT_SOUND_H
 
 #include <3ds.h>
 #include <string>
 
-class sound
-{
+class sound {
 public:
 	sound(const std::string& path, int channel = 1, bool toloop = true);
 	~sound();
@@ -19,3 +19,5 @@ private:
 };
 
 void playCount(void);
+
+#endif

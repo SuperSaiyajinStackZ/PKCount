@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,17 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef ENCOUNTERSCREEN_HPP
-#define ENCOUNTERSCREEN_HPP
+#ifndef _PKCOUNT_ENCOUNTER_SCREEN_HPP
+#define _PKCOUNT_ENCOUNTER_SCREEN_HPP
 
+#include "inifile.h"
 #include "screenCommon.hpp"
-
-#include "utils/structs.hpp"
+#include "structs.hpp"
 
 #include <vector>
 
-class Encounter : public screen
-{
+class Encounter : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
@@ -44,15 +43,20 @@ private:
 	void readCurrentEnc();
 	void saveCurrentEnc();
 	void createNewEnc();
+	CIniFile encounterIni;
+
+	CIniFile getEncounterFile() {
+		return this->encounterIni;
+	}
 
 	// Current Encounter name.
 	std::string speciesName = "";
 	std::string currentGeneration = "";
 
 	std::vector<Structs::ButtonPos> mainButtons = {		
-		{100, 80, 64, 64, -1}, // Plus.
-		{180, 80, 64, 64, -1}, // Minus.
-		{250, 145, 64, 64, -1}, // Reset.
+		{100, 80, 64, 64}, // Plus.
+		{180, 80, 64, 64}, // Minus.
+		{250, 145, 64, 64} // Reset.
 	};
 };
 

@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,44 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "screens/screen.hpp"
+#ifndef _PKCOUNT_INIT_HPP
+#define _PKCOUNT_INIT_HPP
 
-// Fade stuff.
-int fadealpha = 255;
-bool fadein = true;
+#include <3ds.h>
 
-std::stack<std::unique_ptr<screen>> screens;
-
-void Screen::set(std::unique_ptr<screen> screen2)
-{
-	screens.push(std::move(screen2));
+namespace Init {
+	// Init, Mainloop & Exit.
+	Result Initialize();
+	Result MainLoop();
+	Result Exit();
 }
 
-void Screen::fade(std::unique_ptr<screen> screen2, bool fadeout) {
-	if (fadeout) {
-		fadealpha += 6;
-		if (fadealpha > 255) {
-			fadealpha = 255;
-			screens.push(std::move(screen2));
-			fadein = true;
-			fadeout = false;
-		}
-	}
-}
-
-void Screen::back()
-{
-	screens.pop();
-}
-
-void Screen::loop(u32 hDown, u32 hHeld, touchPosition touch) {
-	screens.top()->Draw();
-	screens.top()->Logic(hDown, hHeld, touch);
-	if (fadein == true) {
-		fadealpha -= 6;
-		if (fadealpha < 0) {
-			fadealpha = 0;
-			fadein = false;
-		}
-	}
-}
+#endif

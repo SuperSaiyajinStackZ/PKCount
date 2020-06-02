@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,24 +24,22 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "gui.hpp"
+#include "common.hpp"
 
-#include "screens/creditsScreen.hpp"
-#include "screens/encounterScreen.hpp"
-#include "screens/instructions.hpp"
-#include "screens/screenSelection.hpp"
-#include "screens/settingsScreen.hpp"
+#include "creditsScreen.hpp"
+#include "encounterScreen.hpp"
+#include "instructions.hpp"
+#include "screenSelection.hpp"
+#include "settingsScreen.hpp"
 
 #define MAX_SCREENS 4
 
 extern int textColor;
 extern int barColor;
 extern bool exiting;
-extern int fadealpha;
 
-void ScreenSelection::Draw(void) const
-{
-	Gui::DrawTop();
+void ScreenSelection::Draw(void) const {
+	GFX::DrawTop();
 	Gui::DrawStringCentered(0, -1, 0.8f, textColor, "Select the screen you want to enter.");
 
 	// Draw Boxes.
@@ -52,15 +50,15 @@ void ScreenSelection::Draw(void) const
 	Gui::Draw_Rect(150, 140, 100, 60, barColor & C2D_Color32(255, 255, 255, 120));
 
 	// Draw Selection.
-	if (selectedScreen == 0) {
+	if (this->selectedScreen == 0) {
 		Gui::Draw_Rect(30, 50, 100, 60, barColor);
-	} else if (selectedScreen == 1) {
+	} else if (this->selectedScreen == 1) {
 		Gui::Draw_Rect(150, 50, 100, 60, barColor);
-	} else if (selectedScreen == 2) {
+	} else if (this->selectedScreen == 2) {
 		Gui::Draw_Rect(270, 50, 100, 60, barColor);
-	} else if (selectedScreen == 3) {
+	} else if (this->selectedScreen == 3) {
 		Gui::Draw_Rect(30, 140, 100, 60, barColor);
-	} else if (selectedScreen == 4) {
+	} else if (this->selectedScreen == 4) {
 		Gui::Draw_Rect(150, 140, 100, 60, barColor);
 	}
 
@@ -70,48 +68,57 @@ void ScreenSelection::Draw(void) const
 
 	Gui::DrawString((400-Gui::GetStringWidth(0.6f, "Instructions\n   Screen"))/2-70-50, 150, 0.6f, textColor, "Instructions\n   Screen");
 	Gui::DrawString((400-Gui::GetStringWidth(0.6f, "Exit App"))/2-50+50, 160, 0.6f, textColor, "Exit App");
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
-	Gui::DrawBottom();
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+	GFX::DrawBottom();
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 
 void ScreenSelection::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_A) {
-		if (selectedScreen == 0) {
-			Screen::set(std::make_unique<Encounter>());
-		} else if (selectedScreen == 1) {
-			Screen::set(std::make_unique<Settings>());
-		} else if (selectedScreen == 2) {
-			Screen::set(std::make_unique<Credits>());
-		} else if (selectedScreen == 3) {
-			 Gui::DrawWarnMsg("This Feature is not implemented yet.");
-		} else if (selectedScreen == 4) {
+		if (this->selectedScreen == 0) {
+			Gui::setScreen(std::make_unique<Encounter>(), true, true);
+		} else if (this->selectedScreen == 1) {
+			Gui::setScreen(std::make_unique<Settings>(), true, true);
+		} else if (this->selectedScreen == 2) {
+			Gui::setScreen(std::make_unique<Credits>(), true, true);
+		} else if (this->selectedScreen == 3) {
+			 Msg::DrawWarnMsg("This Feature is not implemented yet.");
+		} else if (this->selectedScreen == 4) {
+			fadecolor = 0;
+			fadeout = true;
 			exiting = true;
 		}
 	}
 
 	if (hDown & KEY_RIGHT || hDown & KEY_R) {
-		if (selectedScreen < MAX_SCREENS)	selectedScreen++;
+		if (this->selectedScreen < MAX_SCREENS)	this->selectedScreen++;
 	}
 
 	if (hDown & KEY_UP) {
-		if (selectedScreen == 3) {
-			selectedScreen = 0;
-		} else if (selectedScreen == 4) {
-			selectedScreen = 1;
+		if (this->selectedScreen == 3) {
+			this->selectedScreen = 0;
+		} else if (this->selectedScreen == 4) {
+			this->selectedScreen = 1;
 		}
 	}
 
 	if (hDown & KEY_DOWN) {
-		if (selectedScreen == 0) {
-			selectedScreen = 3;
-		} else if (selectedScreen == 1) {
-			selectedScreen = 4;
+		if (this->selectedScreen == 0) {
+			this->selectedScreen = 3;
+		} else if (this->selectedScreen == 1) {
+			this->selectedScreen = 4;
 		}
 	}
 
 	if (hDown & KEY_LEFT || hDown & KEY_L) {
-		if (selectedScreen > 0)	selectedScreen--;
+		if (this->selectedScreen > 0)	this->selectedScreen--;
+	}
+
+	// Allow exiting with START here as well.
+	if (hDown & KEY_START) {
+		fadecolor = 0;
+		fadeout = true;
+		exiting = true;
 	}
 }

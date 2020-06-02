@@ -1,8 +1,7 @@
 #include "colors.hpp"
 #include "graphics.hpp"
 #include "gui.hpp"
-
-#include "utils/keyboard.h"
+#include "keyboard.h"
 
 #include <string>
 #include <stdio.h>
@@ -27,12 +26,12 @@ Key keysQWE[] = {
 	{"z", 30, 54}, {"x", 50, 54}, {"c", 70, 54}, {"v", 90, 54}, {"b", 110, 54}, {"n", 130, 54}, {"m", 150, 54}, {",", 170, 54}, {".", 190, 54}, {"/", 210, 54},
 };
 Key keysSpecialQWE[] = {
-	{"bksp", 240, 0},	// Backspace
-	{"caps", 0, 36},	// Caps Lock
-	{"entr", 240, 36},	// Enter
-	{"lsft", 0, 54},	// Left Shift
-	{"rsft", 230, 54},	// Right Shift
-	{"mode", 50, 72},	// Change mode
+	{"bksp", 240, 0},	// Backspace.
+	{"caps", 0, 36},	// Caps Lock.
+	{"entr", 240, 36},	// Enter.
+	{"lsft", 0, 54},	// Left Shift.
+	{"rsft", 230, 54},	// Right Shift.
+	{"mode", 50, 72},	// Change mode.
 };
 
 void clearVars(void) {
@@ -58,10 +57,10 @@ void drawKeyboard(std::string inputText) {
 }
 
 void processTouchQWE(touchPosition touch, uint maxLength) {
-	if(string.length() < maxLength) {
-		// Check if a regular key was pressed
+	if (string.length() < maxLength) {
+		// Check if a regular key was pressed.
 		for(uint i=0;i<(sizeof(keysQWE)/sizeof(keysQWE[0]));i++) {
-			if((touch.px > keysQWE[i].x-2 && touch.px < keysQWE[i].x+18) && (touch.py > keysQWE[i].y+(192-keyboardData.height)-2 && touch.py < keysQWE[i].y+18+(192-keyboardData.height))) {
+			if ((touch.px > keysQWE[i].x-2 && touch.px < keysQWE[i].x+18) && (touch.py > keysQWE[i].y+(192-keyboardData.height)-2 && touch.py < keysQWE[i].y+18+(192-keyboardData.height))) {
 				drawRectangle(keysQWE[i].x, keysQWE[i].y+(192-keyboardData.height), 16, 16, DARK_GRAY, false);
 				char c = keysQWE[i].character[0];
 				string += (shift || caps ? toupper(c) : c);
@@ -70,40 +69,40 @@ void processTouchQWE(touchPosition touch, uint maxLength) {
 				break;
 			}
 		}
-		// Check if space was pressed
+		// Check if space was pressed.
 		Key key = {" ", 70, 72};
-		if((touch.px > key.x-2 && touch.px < key.x+100) && (touch.py > key.y+(192-keyboardData.height)-2 && touch.py < key.y+18+(192-keyboardData.height))) {
+		if ((touch.px > key.x-2 && touch.px < key.x+100) && (touch.py > key.y+(192-keyboardData.height)-2 && touch.py < key.y+18+(192-keyboardData.height))) {
 			drawRectangle(key.x, key.y+(192-keyboardData.height), 96, 16, DARK_GRAY, false);
 			string += key.character;
 			shift = false;
 			printText(string, 0, 192-keyboardData.height-16, false);
 		}
 	}
-	// Check if a special key was pressed
+	// Check if a special key was pressed.
 	for(uint i=0;i<(sizeof(keysSpecialQWE)/sizeof(keysSpecialQWE[0]));i++) {
-		if((touch.px > keysSpecialQWE[i].x-2 && touch.px < keysSpecialQWE[i].x+18) && (touch.py > keysSpecialQWE[i].y+(192-keyboardData.height)-2 && touch.py < keysSpecialQWE[i].y+18+(192-keyboardData.height))) {
-			if(keysSpecialQWE[i].character == "bksp") {
+		if ((touch.px > keysSpecialQWE[i].x-2 && touch.px < keysSpecialQWE[i].x+18) && (touch.py > keysSpecialQWE[i].y+(192-keyboardData.height)-2 && touch.py < keysSpecialQWE[i].y+18+(192-keyboardData.height))) {
+			if (keysSpecialQWE[i].character == "bksp") {
 				drawRectangle(keysSpecialQWE[i].x, keysSpecialQWE[i].y+(192-keyboardData.height), 16, 16, DARK_GRAY, false);
 				string = string.substr(0, string.length()-1);
 				drawRectangle(0, 192-keyboardData.height-16, 256, 16, DARKER_GRAY, false);
 				printText(string, 0, 192-keyboardData.height-16, false);
-			} else if(keysSpecialQWE[i].character == "caps") {
+			} else if (keysSpecialQWE[i].character == "caps") {
 				caps = !caps;
-				if(caps) drawRectangle(keysSpecialQWE[i].x, keysSpecialQWE[i].y+(192-keyboardData.height), 16, 16, GRAY, false);
+				if (caps) drawRectangle(keysSpecialQWE[i].x, keysSpecialQWE[i].y+(192-keyboardData.height), 16, 16, GRAY, false);
 				whileHeld();
-			} else if(keysSpecialQWE[i].character == "entr") {
+			} else if (keysSpecialQWE[i].character == "entr") {
 				drawRectangle(keysSpecialQWE[i].x, keysSpecialQWE[i].y+(192-keyboardData.height), 16, 16, GRAY, false);
 				whileHeld();
 				enter = true;
-			} else if(keysSpecialQWE[i].character == "lsft") {
-				if(shift)	shift = 0;
+			} else if (keysSpecialQWE[i].character == "lsft") {
+				if (shift)	shift = 0;
 				else {
 					drawRectangle(keysSpecialQWE[i].x, keysSpecialQWE[i].y+(192-keyboardData.height), 26, 16, GRAY, false);
 					whileHeld();
 					shift = 1;
 				}
-			} else if(keysSpecialQWE[i].character == "rsft") {
-				if(shift)	shift = 0;
+			} else if (keysSpecialQWE[i].character == "rsft") {
+				if (shift)	shift = 0;
 				else {
 					drawRectangle(keysSpecialQWE[i].x, keysSpecialQWE[i].y+(192-keyboardData.height), 26, 16, GRAY, false);
 					whileHeld();
@@ -128,20 +127,20 @@ std::string Input::getLine(uint maxLength, std::string inputText) {
 			scanKeys();
 			held = keysDownRepeat();
 			pressed = keysDown();
-			if(cursorBlink == 30) {
+			if (cursorBlink == 30) {
 				drawRectangle(0, 192-keyboardData.height-16, 256, 16, DARKER_GRAY, false);
 				printText(string+"_", 0, 192-keyboardData.height-16, false);
-			} else if(cursorBlink == 0) {
+			} else if (cursorBlink == 0) {
 				drawRectangle(0, 192-keyboardData.height-16, 256, 16, DARKER_GRAY, false);
 				printText(string, 0, 192-keyboardData.height-16, false);
-			} else if(cursorBlink == -30) {
+			} else if (cursorBlink == -30) {
 				cursorBlink = 31;
 			}
 			cursorBlink--;
 		} while(!held);
-			if(caps) drawRectangle(keysSpecialQWE[1].x, keysSpecialQWE[1].y+(192-keyboardData.height), 16, 16, GRAY, false);
+			if (caps) drawRectangle(keysSpecialQWE[1].x, keysSpecialQWE[1].y+(192-keyboardData.height), 16, 16, GRAY, false);
 
-		if(pressed & KEY_TOUCH) {
+		if (pressed & KEY_TOUCH) {
 			touchRead(&touch);
 			processTouchQWE(touch, maxLength);
 			
@@ -152,17 +151,19 @@ std::string Input::getLine(uint maxLength, std::string inputText) {
 			printText(string + (cursorBlink ? "_" : ""), 0, 192-keyboardData.height-16, false);
 
 			// If caps lock / shift are on, highlight the key
-			if(caps)	drawRectangle(keysSpecialQWE[1].x, keysSpecialQWE[1].y+(192-keyboardData.height), 16, 16, GRAY, false);
-			if(shift)	drawRectangle(keysSpecialQWE[2+shift].x, keysSpecialQWE[2+shift].y+(192-keyboardData.height), 26, 16, GRAY, false);
-		} else if(held & KEY_B) {
+			if (caps)	drawRectangle(keysSpecialQWE[1].x, keysSpecialQWE[1].y+(192-keyboardData.height), 16, 16, GRAY, false);
+			if (shift)	drawRectangle(keysSpecialQWE[2+shift].x, keysSpecialQWE[2+shift].y+(192-keyboardData.height), 26, 16, GRAY, false);
+		} else if (held & KEY_B) {
 			drawRectangle(keysSpecialQWE[0].x, keysSpecialQWE[0].y+(192-keyboardData.height), 16, 16, DARK_GRAY, false);
 			string = string.substr(0, string.length()-1);
 			drawRectangle(0, 192-keyboardData.height-16, 256, 16, DARKER_GRAY, false);
 			printText(string, 0, 192-keyboardData.height-16, false);
 		}
-		if(held & KEY_START || enter) {
+
+		if (held & KEY_START || enter) {
 			break;
 		}
 	}
+
 	return string;
 }

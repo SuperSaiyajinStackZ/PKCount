@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,22 +24,35 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "gui.hpp"
+#include "common.hpp"
 
-#include "screens/creditsScreen.hpp"
+#include "creditsScreen.hpp"
 
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 extern int textColor;
 
-void Credits::Draw(void) const
-{
-	Gui::DrawTop();
+void Credits::Draw(void) const {
+	GFX::DrawTop();
 	Gui::DrawStringCentered(0, -1, 0.8f, textColor, "PKCount - Credits");
-	Gui::sprite(sprites_stackZ_idx, 0, 45);
-	Gui::DrawString(160, 65, 0.6f, textColor, "Hello there! I'm StackZ.\nI'm the Developer of this App. \nI hope you enjoy it!\nSee ya, StackZ.");
-	Gui::DrawBottom();
+	GFX::DrawSprite(sprites_banner_idx, 72, 30);
+	GFX::DrawSprite(sprites_stackZ_idx, -3, 85);
+	GFX::DrawSprite(sprites_stackie_idx, 285, 85);
+	Gui::DrawString(397-Gui::GetStringWidth(0.6f, V_STRING), 237-Gui::GetStringHeight(0.6f, V_STRING), 0.6f, textColor, V_STRING);
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+	GFX::DrawBottom();
+
+	Gui::DrawStringCentered(0, -1, 0.8f, textColor, "General Credits");
+	Gui::DrawStringCentered(0, 30, 0.8f, textColor, "Universal-Team");
+	Gui::DrawStringCentered(0, 60, 0.7f, textColor, "- For Universal-Core, which is being used inside the app.", 300);
+	Gui::DrawStringCentered(0, 90, 0.8f, textColor, "Stack-Team");
+	Gui::DrawStringCentered(0, 120, 0.7f, textColor, "- For developing this app.");
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 
 void Credits::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+	if (hDown & KEY_B) {
+		Gui::screenBack(true);
+		return;
+	}
 }

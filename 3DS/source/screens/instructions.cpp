@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "gui.hpp"
+#include "common.hpp"
 
-#include "screens/instructions.hpp"
+#include "instructions.hpp"
 
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 extern int textColor;
@@ -39,13 +39,18 @@ void Instructions::DrawInst(void) const {
 }
 
 
-void Instructions::Draw(void) const
-{
-	Gui::DrawTop();
+void Instructions::Draw(void) const {
+	GFX::DrawTop();
 	DrawInst();
-	Gui::DrawBottom();
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+	GFX::DrawBottom();
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 
 void Instructions::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+	if (hDown & KEY_B) {
+		Gui::screenBack(true);
+		return;
+	}
 }

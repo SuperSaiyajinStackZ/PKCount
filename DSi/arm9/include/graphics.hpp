@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_HPP
 #define GRAPHICS_HPP
 
-#include "utils/stringUtils.hpp"
+#include "stringUtils.hpp"
 
 #include <nds.h>
 #include <string>

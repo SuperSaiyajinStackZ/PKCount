@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -30,13 +30,11 @@
 #include <memory>
 #include <nds.h>
 
-class Screen
-{
+class Screen {
 public:
 	virtual ~Screen() {}
 	virtual void Logic(u16 hDown, touchPosition touch) = 0;
 	virtual void Draw() const = 0;
-private:
 };
 
 #endif

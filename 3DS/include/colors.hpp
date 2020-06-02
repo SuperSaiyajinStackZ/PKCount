@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef COLORS_HPP
-#define COLORS_HPP
+#ifndef _PKCOUNT_COLORS_HPP
+#define _PKCOUNT_COLORS_HPP
 
 #include <citro2d.h>
 #include <sstream>

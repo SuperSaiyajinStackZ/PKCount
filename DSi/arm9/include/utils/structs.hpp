@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -29,19 +29,14 @@
 
 #include <string>
 
-class Structs
-{
+class Structs {
 public:
-struct ButtonPos
-{
-	int x;
-	int y;
-	int w;
-	int h;
-	int link;
-};
-
-private:
+	struct ButtonPos {
+		int x;
+		int y;
+		int w;
+		int h;
+	};
 };
 
 #endif

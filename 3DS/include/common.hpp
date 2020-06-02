@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,44 +24,13 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef GUI_HPP
-#define GUI_HPP
+#ifndef _PKCOUNT_COMMON_HPP
+#define _PKCOUNT_COMMON_HPP
 
-#include "colors.hpp"
-#include "sprites.h"
-
-#include "screens/screen.hpp"
-
-namespace Gui
-{
-	Result init(void);
-	void exit(void);
-
-	void setDraw(C3D_RenderTarget * screen);
-	C3D_RenderTarget* target(gfxScreen_t t);
-
-	// Clear Text.
-	void clearTextBufs(void);
-
-	// Draw Sprites from the Sheets.
-	void sprite(int key, int x, int y, float ScaleX = 1.0, float ScaleY = 1.0);
-
-	// Misc.
-	bool Draw_Rect(float x, float y, float w, float h, u32 color);
-	bool promptMsg(std::string promptMsg, std::string AOption, std::string BOption);
-	void HelperBox(std::string Msg);
-	void DrawWarnMsg(std::string msg);
-
-	// New Text / String Functions.
-	void DrawStringCentered(float x, float y, float size, u32 color, std::string Text, int maxWidth = 400);
-	void DrawString(float x, float y, float size, u32 color, std::string Text, int maxWidth = 400);
-	void GetStringSize(float size, float *width, float *height, std::string Text);
-	float GetStringWidth(float size, std::string Text);
-	float GetStringHeight(float size, std::string Text);
-
-	// GUI.
-	void DrawTop(void);
-	void DrawBottom(void);
-}
+#include "gfx.hpp"
+#include "gui.hpp"
+#include "msg.hpp"
+#include "screenCommon.hpp"
+#include "sound.h"
 
 #endif

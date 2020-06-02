@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,29 +24,18 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef STRUCTS_HPP
-#define STRUCTS_HPP
+#ifndef _PKCOUNT_MSG_HPP
+#define _PKCOUNT_MSG_HPP
+
+#include "colors.hpp"
+#include "common.hpp"
 
 #include <string>
 
-class Structs
-{
-public:
-	struct ButtonPos {
-		int x;
-		int y;
-		int w;
-		int h;
-		int link;
-	};
-
-	struct Key {
-		std::string character;
-		int x;
-		int y;
-		int w;
-	};
-private:
-};
+namespace Msg {
+	bool promptMsg(std::string promptMsg, std::string AOption, std::string BOption);
+	void HelperBox(std::string Msg);
+	void DrawWarnMsg(std::string msg);
+}
 
 #endif

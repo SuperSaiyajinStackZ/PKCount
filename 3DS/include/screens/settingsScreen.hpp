@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,17 +24,15 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef SETTINGSSCREEN_HPP
-#define SETTINGSSCREEN_HPP
+#ifndef _PKCOUNT_SETTINGS_SCREEN_HPP
+#define _PKCOUNT_SETTINGS_SCREEN_HPP
 
 #include "screenCommon.hpp"
-
-#include "utils/structs.hpp"
+#include "structs.hpp"
 
 #include <vector>
 
-class Settings : public screen
-{
+class Settings : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
@@ -42,9 +40,9 @@ private:
 	int currentSetting = 0;
 	
 	std::vector<Structs::ButtonPos> buttons = {
-		{10, 85, 95, 41, -1},
-		{115, 85, 95, 41, -1},
-		{220, 85, 95, 41, -1},
+		{10, 85, 95, 41},
+		{115, 85, 95, 41},
+		{220, 85, 95, 41}
 	};
 };
 

@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,17 +24,12 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef SCREENSELECTION_HPP
-#define SCREENSELECTION_HPP
+#ifndef _PKCOUNT_SCREEN_SELECTION_HPP
+#define _PKCOUNT_SCREEN_SELECTION_HPP
 
 #include "screenCommon.hpp"
 
-#include "utils/structs.hpp"
-
-#include <vector>
-
-class ScreenSelection : public screen
-{
+class ScreenSelection : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;

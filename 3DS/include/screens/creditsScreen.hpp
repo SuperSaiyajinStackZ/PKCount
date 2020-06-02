@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,21 +24,19 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef CREDITSSCREEN_HPP
-#define CREDITSSCREEN_HPP
+#ifndef _PKCOUNT_CREDITS_SCREEN_HPP
+#define _PKCOUNT_CREDITS_SCREEN_HPP
 
 #include "screenCommon.hpp"
 
-#include "utils/structs.hpp"
+#include "structs.hpp"
 
 #include <vector>
 
-class Credits : public screen
-{
+class Credits : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
-private:
 };
 
 #endif

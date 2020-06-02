@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,27 +24,17 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef SCREEN_HPP
-#define SCREEN_HPP
+#ifndef _PKCOUNT_SPLASH_HPP
+#define _PKCOUNT_SPLASH_HPP
 
-#include <3ds.h>
-#include <memory>
-#include <stack>
+#include "common.hpp"
 
-class screen
-{
+class Splash : public Screen {
 public:
-	virtual ~screen() {}
-	virtual void Logic(u32 hDown, u32 hHeld, touchPosition touch) = 0;
-	virtual void Draw() const = 0;
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
 private:
+	int delay = 0;
 };
-
-namespace Screen {
-	void set(std::unique_ptr<screen> screen2);
-	void fade(std::unique_ptr<screen> screen2, bool fadeout = true);
-	void back(void);
-	void loop(u32 hDown, u32 hHeld, touchPosition touch);
-}
 
 #endif

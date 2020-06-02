@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,12 +24,10 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "encounterScreen.hpp"
 #include "gui.hpp"
+#include "inifile.h"
 #include "keyboard.h"
-
-#include "screens/encounterScreen.hpp"
-
-#include "utils/inifile.h"
 
 #include <string>
 
@@ -59,12 +57,11 @@ void Encounter::DrawCredits(void) const {
 
 
 
-void Encounter::Draw(void) const
-{
+void Encounter::Draw(void) const {
 	if (screenDrawn) return;
 	if (screenMode == 0) {
 		Gui::DrawTop();
-		printTextCentered("PKCount by StackZ", 0, 2, true);
+		printTextCentered("PKCount by Stack-Team", 0, 2, true);
 
 		printTextCentered("Current Species: " + speciesName, 0, 50, true);
 		printTextCentered("Current Generation: " + currentGeneration, 0, 85, true);
@@ -77,6 +74,7 @@ void Encounter::Draw(void) const
 	} else if (screenMode == 1) {
 		DrawCredits();
 	}
+
 	screenDrawn = true;
 }
 
@@ -110,6 +108,7 @@ void Encounter::Logic(u16 hDown, touchPosition touch) {
 			if (Gui::promptMsg("Would you like to create a new Encounter?", "Yes", "No")) {
 				createNewEnc();
 			}
+
 			screenDrawn = false;
 		}
 
@@ -144,6 +143,7 @@ void Encounter::Logic(u16 hDown, touchPosition touch) {
 				screenDrawn = false;
 			}
 		}
+
 		// Credits Screen.
 	} else if (screenMode == 1) {
 		if (hDown & KEY_TOUCH) {
@@ -175,5 +175,6 @@ void Encounter::saveCurrentEnc() {
 		speciesName = Input::getLine("Enter the current Species name.");
 		encounterIni.SetInt(currentGeneration, speciesName, currentEncounter);
 	}
+
 	encounterIni.SaveIniFile("sdmc:/_nds/PKCount/Encounter.ini");
 }

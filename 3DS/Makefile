@@ -55,9 +55,10 @@ VERSION_STRING := "Version: $(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_MICRO)"
 #---------------------------------------------------------------------------------
 TARGET		:=	PKCount
 BUILD		:=	build
-SOURCES		:=	source source/screens source/utils
+UNIVCORE	:= 	Universal-Core
+SOURCES		:=	$(UNIVCORE) source source/screens source/utils
 DATA		:=	data
-INCLUDES	:=	include include/screens include/utils
+INCLUDES	:=	$(UNIVCORE) include include/screens include/utils
 GRAPHICS	:=	assets/gfx
 ROMFS		:=	romfs
 GFXBUILD	:=	$(ROMFS)/gfx

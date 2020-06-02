@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -28,13 +28,11 @@
 #define ENCOUNTERSCREEN_HPP
 
 #include "screenCommon.hpp"
-
-#include "utils/structs.hpp"
+#include "structs.hpp"
 
 #include <vector>
 
-class Encounter : public Screen
-{
+class Encounter : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u16 hDown, touchPosition touch) override;
@@ -53,10 +51,10 @@ private:
 	std::string currentGeneration = "";
 
 	std::vector<Structs::ButtonPos> mainButtons = {		
-		{60, 30, 64, 64, -1}, // Plus.
-		{150, 30, 64, 64, -1}, // Minus.
-		{180, 105, 64, 64, -1}, // Reset.
-		{0, 172, 256, 20, -1}, // Bar.
+		{60, 30, 64, 64}, // Plus.
+		{150, 30, 64, 64}, // Minus.
+		{180, 105, 64, 64}, // Reset.
+		{0, 172, 256, 20} // Bar.
 	};
 };
 

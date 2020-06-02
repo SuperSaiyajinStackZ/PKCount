@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   Copyright (C) 2019-2020 Stack-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -26,8 +26,7 @@
 
 #include "colors.hpp"
 
-int ColorHelper::getColorValue(int color, int bgr)
-{
+int ColorHelper::getColorValue(int color, int bgr) {
 	char colorName[10];
 	int i;
 	std::stringstream ss;
@@ -40,8 +39,7 @@ int ColorHelper::getColorValue(int color, int bgr)
 	return i;
 }
 
-std::string ColorHelper::getColorName(int color, int bgr)
-{
+std::string ColorHelper::getColorName(int color, int bgr) {
 	char colorName[10];
 	int i = getColorValue(color, bgr);
 	itoa(i, colorName, 10);

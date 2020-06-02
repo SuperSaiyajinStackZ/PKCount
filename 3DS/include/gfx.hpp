@@ -1,6 +1,6 @@
 /*
-*   This file is part of PKCount
-*   Copyright (C) 2019-2020 StackZ
+*   This file is part of 3DSpiele
+*   Copyright (C) 2020 SuperSaiyajinStackie
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -24,14 +24,18 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef SCREENCOMMON_HPP
-#define SCREENCOMMON_HPP
+#ifndef _3DSPIELE_GFX_HPP
+#define _3DSPIELE_GFX_HPP
 
-#include "gui.hpp"
+#include "colors.hpp"
+#include "sprites.h"
 
-#include "utils/sound.h"
-
-extern C3D_RenderTarget* Top;
-extern C3D_RenderTarget* Bottom;
+namespace GFX {
+	// Basic GUI.
+	void DrawTop(void);
+	void DrawBottom(void);
+	
+	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
+}
 
 #endif

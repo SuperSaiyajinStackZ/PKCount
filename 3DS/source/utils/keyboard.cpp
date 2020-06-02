@@ -1,7 +1,33 @@
-#include "gui.hpp"
+/*
+*   This file is part of PKCount
+*   Copyright (C) 2019-2020 Stack-Team
+*
+*   This program is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*   Additional Terms 7.b and 7.c of GPLv3 apply to this file:
+*       * Requiring preservation of specified reasonable legal notices or
+*         author attributions in that material or in the Appropriate Legal
+*         Notices displayed by works containing it.
+*       * Prohibiting misrepresentation of the origin of that material,
+*         or requiring that modified versions of such material be marked in
+*         reasonable ways as different from the original version.
+*/
 
-#include "utils/keyboard.hpp"
-#include "utils/structs.hpp"
+#include "common.hpp"
+
+#include "keyboard.hpp"
+#include "structs.hpp"
 
 #include <string>
 #include <stdio.h>
@@ -80,8 +106,7 @@ Structs::ButtonPos Numbers [] = {
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 
-void Input::DrawNumpad()
-{
+void Input::DrawNumpad() {
 	for(uint i=0;i<(sizeof(NumpadStruct)/sizeof(NumpadStruct[0]));i++) {
 		Gui::Draw_Rect(NumpadStruct[i].x, NumpadStruct[i].y, 60, 50, barColor);
 		char c[2] = {NumpadStruct[i].character[0]};
@@ -90,9 +115,9 @@ void Input::DrawNumpad()
 }
 
 void Input::drawKeyboard() {
-	for(uint i=0;i<(sizeof(keysQWERTY)/sizeof(keysQWERTY[0]));i++) {
+	for (uint i=0;i<(sizeof(keysQWERTY)/sizeof(keysQWERTY[0]));i++) {
 		C2D_DrawRectSolid(keysQWERTY[i].x, keysQWERTY[i].y+103, 0.5f, 20, 20, barColor & C2D_Color32(255, 255, 255, 200));
-		if(shift) {
+		if (shift) {
 			char c[2] = {caps ? (char)toupper(keysQWERTYShift[i].character[0]) : keysQWERTYShift[i].character[0]};
 			Gui::DrawString(keysQWERTYShift[i].x+(10-(Gui::GetStringWidth(0.50, c)/2)), keysQWERTYShift[i].y+103+(10-(Gui::GetStringHeight(0.50, c)/2)), 0.50, textColor, c);
 		} else {
@@ -100,15 +125,14 @@ void Input::drawKeyboard() {
 			Gui::DrawString(keysQWERTY[i].x+(10-(Gui::GetStringWidth(0.50, c)/2)), keysQWERTY[i].y+103+(10-(Gui::GetStringHeight(0.50, c)/2)), 0.50, textColor, c);
 		}
 	}
-	for(uint i=0;i<(sizeof(modifierKeys)/sizeof(modifierKeys[0]));i++) {
+	for (uint i=0;i<(sizeof(modifierKeys)/sizeof(modifierKeys[0]));i++) {
 		C2D_DrawRectSolid(modifierKeys[i].x, modifierKeys[i].y+103, 0.5f, modifierKeys[i].w, 20, barColor & C2D_Color32(255, 255, 255, 200));
 	}
 }
 
 std::string Input::Numpad(std::string Text) { return Input::Numpad(-1, Text); }
 
-std::string Input::Numpad(uint maxLength, std::string Text)
-{
+std::string Input::Numpad(uint maxLength, std::string Text) {
 	int hDown;
 	touchPosition touch;
 	std::string string;
@@ -121,28 +145,28 @@ std::string Input::Numpad(uint maxLength, std::string Text)
 			C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 			C2D_TargetClear(Top, BLACK);
 			C2D_TargetClear(Bottom, BLACK);
-			Gui::DrawTop();
+			GFX::DrawTop();
 			Gui::DrawString((400-Gui::GetStringWidth(0.55f, Text))/2, 2, 0.55f, textColor, Text, 400);
 			Gui::DrawString(0, 218, 0.8, textColor, (string+(cursorBlink-- > 0 ? "_" : "")).c_str(), 400);
-			if(cursorBlink < -20)	cursorBlink = 20;
-			Gui::setDraw(Bottom);
+			if (cursorBlink < -20)	cursorBlink = 20;
+			Gui::ScreenDraw(Bottom);
 			Gui::Draw_Rect(0, 0, 320, 240, barColor);
 			DrawNumpad();
 			scanKeys();
 			hDown = keysDown();
-			if(keyDownDelay > 0) {
+			if (keyDownDelay > 0) {
 				keyDownDelay--;
-			} else if(keyDownDelay == 0) {
+			} else if (keyDownDelay == 0) {
 				keyDownDelay--;
 			}
 		} while(!hDown);
-		if(keyDownDelay > 0) {
+		if (keyDownDelay > 0) {
 		}
 		keyDownDelay = 10;
 
-		if(hDown & KEY_TOUCH) {
+		if (hDown & KEY_TOUCH) {
 			touchRead(&touch);
-			if(string.length() < maxLength) {
+			if (string.length() < maxLength) {
 				if (touching(touch, Numbers[0])) {
 					string += "1";
 				} else if (touching(touch, Numbers[1])) {
@@ -167,11 +191,11 @@ std::string Input::Numpad(uint maxLength, std::string Text)
 			}
 		}
 
-		if(hDown & KEY_B || touching(touch, Numbers[11])) {
+		if (hDown & KEY_B || touching(touch, Numbers[11])) {
 			string = string.substr(0, string.length()-1);
 		}
 
-		if(hDown & KEY_START || touching(touch, Numbers[10]) || enter) {
+		if (hDown & KEY_START || touching(touch, Numbers[10]) || enter) {
 			break;
 		}
 	}
@@ -182,9 +206,9 @@ std::string Input::Numpad(uint maxLength, std::string Text)
 
 int Input::getUint(int max, std::string Text) {
 	std::string s = Input::Numpad(3, Text);
-	if(s == "" || (atoi(s.c_str()) == 0 && s[0] != '0')) return -1;
+	if (s == "" || (atoi(s.c_str()) == 0 && s[0] != '0')) return -1;
 	int i = atoi(s.c_str());
-	if(i>max)	return 255;
+	if (i>max)	return 255;
 	return i;
 }
 
@@ -201,31 +225,31 @@ std::string Input::getString(uint maxLength, std::string Text) {
 			C3D_FrameEnd(0);
 			Gui::clearTextBufs();
 			C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-			Gui::DrawTop();
+			GFX::DrawTop();
 			Gui::DrawString((400-Gui::GetStringWidth(0.55f, Text))/2, 2, 0.55f, textColor, Text, 400);
-			Gui::DrawBottom();
+			GFX::DrawBottom();
 			drawKeyboard();
 			C2D_DrawRectSolid(0, 81, 0.5f, 320, 20, barColor & C2D_Color32(200, 200, 200, 200));
 			Gui::DrawString(5, 82, 0.6, textColor, (string+(cursorBlink-- > 0 ? "_" : "")).c_str());
-			if(cursorBlink < -20)	cursorBlink = 20;
+			if (cursorBlink < -20)	cursorBlink = 20;
 			scanKeys();
 			hDown = keysDown();
-			if(keyDownDelay > 0) {
+			if (keyDownDelay > 0) {
 				keyDownDelay--;
-			} else if(keyDownDelay == 0) {
+			} else if (keyDownDelay == 0) {
 				keyDownDelay--;
 			}
 		} while(!hDown);
-		if(keyDownDelay > 0) {
+		if (keyDownDelay > 0) {
 		}
 		keyDownDelay = 10;
 
-		if(hDown & KEY_TOUCH) {
+		if (hDown & KEY_TOUCH) {
 			touchRead(&touch);
-			if(string.length() < maxLength) {
+			if (string.length() < maxLength) {
 				// Check if a regular key was pressed
-				for(uint i=0;i<(sizeof(keysQWERTY)/sizeof(keysQWERTY[0]));i++) {
-					if((touch.px > keysQWERTY[i].x-2 && touch.px < keysQWERTY[i].x+18) && (touch.py > keysQWERTY[i].y+(103)-2 && touch.py < keysQWERTY[i].y+18+(103))) {
+				for (uint i=0;i<(sizeof(keysQWERTY)/sizeof(keysQWERTY[0]));i++) {
+					if ((touch.px > keysQWERTY[i].x-2 && touch.px < keysQWERTY[i].x+18) && (touch.py > keysQWERTY[i].y+(103)-2 && touch.py < keysQWERTY[i].y+18+(103))) {
 						char c = (shift ? keysQWERTYShift[i] : keysQWERTY[i]).character[0];
 						string += (shift || caps ? toupper(c) : c);
 						shift = 0;
@@ -234,32 +258,32 @@ std::string Input::getString(uint maxLength, std::string Text) {
 				}
 			}
 			// Check if a modifier key was pressed
-			for(uint i=0;i<(sizeof(modifierKeys)/sizeof(modifierKeys[0]));i++) {
-				if((touch.px > modifierKeys[i].x-2 && touch.px < modifierKeys[i].x+modifierKeys[i].w+2) && (touch.py > modifierKeys[i].y+(103)-2 && touch.py < modifierKeys[i].y+18+(103))) {
-					if(modifierKeys[i].character == "bksp") {
+			for (uint i=0;i<(sizeof(modifierKeys)/sizeof(modifierKeys[0]));i++) {
+				if ((touch.px > modifierKeys[i].x-2 && touch.px < modifierKeys[i].x+modifierKeys[i].w+2) && (touch.py > modifierKeys[i].y+(103)-2 && touch.py < modifierKeys[i].y+18+(103))) {
+					if (modifierKeys[i].character == "bksp") {
 						string = string.substr(0, string.length()-1);
-					} else if(modifierKeys[i].character == "caps") {
+					} else if (modifierKeys[i].character == "caps") {
 						caps = !caps;
-					} else if(modifierKeys[i].character == "entr") {
+					} else if (modifierKeys[i].character == "entr") {
 						enter = true;
-					} else if(modifierKeys[i].character == "lsft") {
-						if(shift)	shift = 0;
+					} else if (modifierKeys[i].character == "lsft") {
+						if (shift)	shift = 0;
 						else		shift = 1;
-						if(shift) {
+						if (shift) {
 							keyDownDelay = -1;
 						} else {
 							keyDownDelay = 0;
 						}
 					} else if(modifierKeys[i].character == "rsft") {
-						if(shift)	shift = 0;
+						if (shift)	shift = 0;
 						else		shift = 2;
-						if(shift) {
+						if (shift) {
 							keyDownDelay = -1;
 						} else {
 							keyDownDelay = 0;
 						}
-					} else if(modifierKeys[i].character == " " || modifierKeys[i].character == "	") {
-						if(string.length() < maxLength) {
+					} else if (modifierKeys[i].character == " " || modifierKeys[i].character == "	") {
+						if (string.length() < maxLength) {
 							shift = 0;
 							string += modifierKeys[i].character[0];
 						}
@@ -267,14 +291,15 @@ std::string Input::getString(uint maxLength, std::string Text) {
 					break;
 				}
 			}
-		} else if(hDown & KEY_B) {
+		} else if (hDown & KEY_B) {
 			string = string.substr(0, string.length()-1);
 			Gui::DrawString(0, 103, 0.5, BLACK, string.c_str(), 320);
 		}
 
-		if(hDown & KEY_START || enter) {
+		if (hDown & KEY_START || enter) {
 			break;
 		}
 	}
+	
 	return string;
 }

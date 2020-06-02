@@ -1,4 +1,4 @@
-#include "utils/sound.h"
+#include "sound.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -28,9 +28,7 @@ typedef struct _WavHeader {
 } WavHeader;
 static_assert(sizeof(WavHeader) == 44, "WavHeader size is not 44 bytes.");
 
-sound::sound(const string& path, int channel, bool toloop)
-{
-
+sound::sound(const string& path, int channel, bool toloop) {
 	ndspSetOutputMode(NDSP_OUTPUT_STEREO);
 	ndspSetOutputCount(2); // Num of buffers
 
@@ -62,8 +60,7 @@ sound::sound(const string& path, int channel, bool toloop)
 
 	if (wavHeader.totallength == 0 ||
 	   (wavHeader.channels != 1 && wavHeader.channels != 2) ||
-	   (wavHeader.bits_per_sample != 8 && wavHeader.bits_per_sample != 16))
-	{
+	   (wavHeader.bits_per_sample != 8 && wavHeader.bits_per_sample != 16)) {
 		// Unsupported WAV file.
 		printf("Corrupted wav file.\n");
 		fclose(fp);
@@ -108,8 +105,7 @@ sound::sound(const string& path, int channel, bool toloop)
 	chnl = channel;
 }
 
-sound::~sound()
-{
+sound::~sound() {
 	waveBuf.data_vaddr = 0;
 	waveBuf.nsamples = 0;
 	waveBuf.looping = false;
@@ -121,18 +117,14 @@ sound::~sound()
 	}
 }
 
-void sound::play()
-{
-	if (!data)
-		return;
+void sound::play() {
+	if (!data)	return;
 	DSP_FlushDataCache(data, dataSize);
 	ndspChnWaveBufAdd(chnl, &waveBuf);
 }
 
-void sound::stop()
-{
-	if (!data)
-		return;
+void sound::stop() {
+	if (!data)	return;
 	ndspChnWaveBufClear(chnl);
 }
 
