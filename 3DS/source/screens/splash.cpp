@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 Stack-Team
+*   Copyright (C) 2019-2020 SuperSaiyajinStackZ
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -33,8 +33,7 @@ void Splash::Draw(void) const {
 	Gui::DrawString(395-Gui::GetStringWidth(0.50, "2019-2020"), 218, 0.50, WHITE, "2019-2020");
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha)); // Fade in/out effect
 	Gui::ScreenDraw(Bottom);
-	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(58, 15, 225, 255));
-	GFX::DrawSprite(sprites_universal_core_idx, 0, 26);
+	GFX::DrawSprite(sprites_universal_core_idx, 0, 0);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha)); // Fade in/out effect
 }
 

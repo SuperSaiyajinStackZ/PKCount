@@ -1,6 +1,6 @@
 /*
 *   This file is part of PKCount
-*   Copyright (C) 2019-2020 Stack-Team
+*   Copyright (C) 2019-2020 SuperSaiyajinStackZ
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -49,10 +49,10 @@ Encounter::Encounter() {
 
 void Encounter::DrawCredits(void) const {
 	Gui::DrawTop();
-	printText("PKCount by StackZ", 80, 2, true);
-	drawImage(0, 70, stackZData.width, stackZData.height, stackZ, true);
-	printTextScaled("Hello there! I'm StackZ.\nI'm the Developer of this App.\nI hope you enjoy it!\nPress on the bar again\nto switch back to the MainScreen.\nSee ya, StackZ.", 0.9, 0.9, 100, 50, true);
+	printTextCentered("PKCount by SuperSaiyajinStackZ", 0, 2, true);
+	printTextCentered("Hello there! I'm SuperSaiyajinStackZ.\nI'm the Developer of this App.\nI hope you enjoy it!\nPress on the bar again\nto switch back to the Main Screen.\nSee ya, ~SuperSaiyajinStackZ.", 0, 40, true);
 	Gui::DrawBottom();
+	drawImage(50, 20, stackZData.width, stackZData.height, stackZ, false);
 }
 
 
@@ -61,7 +61,7 @@ void Encounter::Draw(void) const {
 	if (screenDrawn) return;
 	if (screenMode == 0) {
 		Gui::DrawTop();
-		printTextCentered("PKCount by Stack-Team", 0, 2, true);
+		printTextCentered("PKCount by SuperSaiyajinStackZ", 0, 2, true);
 
 		printTextCentered("Current Species: " + speciesName, 0, 50, true);
 		printTextCentered("Current Generation: " + currentGeneration, 0, 85, true);
