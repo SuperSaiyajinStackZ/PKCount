@@ -12,13 +12,13 @@ These can be installed by getting [devkitPro pacman](https://devkitpro.org/wiki/
 `sudo dkp-pacman -S default-arm7 devkitARM devkitarm-rules libnds libfat-nds`<br/>
 <sup>(command may be slightly different depending on your OS)</sup>
 
-We hope you enjoy this simple app and have fun. ~Stack-Team
+I hope you enjoy this simple app and have fun. ~SuperSaiyajinStackZ
 
 ## Credits
 
 ### Main Developers
 
-- [Stack-Team](https://github.com/Stack-Team): App Idea and Main Developers.
+- [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): App Idea and Main Developer.
 
 ### Image Credits
 

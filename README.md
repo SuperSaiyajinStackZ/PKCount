@@ -8,6 +8,6 @@ You can find the Source to the DS(i) version [here](https://github.com/SuperSaiy
 
 You can find the Source to the 3DS version [here](https://github.com/SuperSaiyajinStackZ/PKCount/3DS/).
 
-I hope you enjoy this simple and basic app. ~StackZ
+I hope you enjoy this simple and basic app. ~SuperSaiyajinStackZ
 
 **Credits are inside the readme of each version.**

@@ -8,13 +8,13 @@ Your Encounter are saved as an INI File under `sdmc:/3ds/PKCount/Encounter.ini`.
 
 To compile it, you need DevkitARM, Citro2D, Citro3D and Libctru. You also need BannerTool Tex3ds and Makerom.
 
-We hope you enjoy this simple app and have fun. ~Stack-Team
+I hope you enjoy this simple app and have fun. ~SuperSaiyajinStackZ
 
 ## Credits
 
-### Main Developers
+### Main Developer
 
-- [Stack-Team](https://github.com/Stack-Team): App Idea and Main Developers.
+- [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): App Idea and Main Developer.
 
 ### Image Credits
 
